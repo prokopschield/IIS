@@ -1,0 +1,39 @@
+version: "3.9"
+services:
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+            - "23097:8080"
+    backend:
+        image: node:20-bullseye
+        working_dir: /backend
+        command: sh -c "node lib/cli"
+        restart: always
+        depends_on:
+            - db
+        ports:
+            - "23095:23095"
+        volumes:
+            - ./backend:/backend
+        environment:
+            DATABASE_URI: mysql://root:${DB_PASSWORD}@db/iscamp
+            PORT: 23095
+    db:
+        image: mariadb:latest
+        restart: always
+        ports:
+            - 3306:3306
+        volumes:
+            - ./data/db:/var/lib/mysql
+        environment:
+            MARIADB_ROOT_PASSWORD: ${DB_PASSWORD}
+    frontend:
+        image: node:20-bullseye
+        working_dir: /frontend
+        command: sh -c "yarn preview --host"
+        restart: always
+        depends_on:
+            - backend
+        volumes:
+            - ./frontend:/frontend

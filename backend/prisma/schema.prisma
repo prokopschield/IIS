@@ -1,0 +1,121 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+model user {
+    id                     BigInt     @id @default(autoincrement()) @db.UnsignedBigInt
+    username               String     @db.VarChar(32)
+    displayname            String     @db.VarChar(64)
+    legal_name             String     @db.VarChar(64)
+    legal_guardian         String     @db.VarChar(64)
+    legal_guardian_contact String     @db.VarChar(64)
+    email                  String     @db.VarChar(64)
+    timestamp              DateTime   @default(now()) @db.Timestamp(0)
+    attendee               attendee[]
+    auth                   auth[]
+    camp                   camp[]
+    dm_sender              dm[]       @relation("sender")
+    dm_recipient           dm[]       @relation("recipient")
+    leader                 leader[]
+}
+
+model auth {
+    id        BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
+    user_id   BigInt   @db.UnsignedBigInt
+    method    String   @db.VarChar(8)
+    secret    String   @db.VarChar(64)
+    timestamp DateTime @default(now()) @db.Timestamp(0)
+    user      user     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "file_ibfk_1")
+
+    @@index([user_id], map: "user_id")
+}
+
+model activity {
+    id          BigInt     @id @default(autoincrement()) @db.UnsignedBigInt
+    name        String     @db.VarChar(64)
+    leader_id   BigInt     @db.UnsignedBigInt
+    description String     @db.Text
+    points      Float
+    timestamp   DateTime   @default(now()) @db.Timestamp(0)
+    leader      leader     @relation(fields: [leader_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "activity_ibfk_1")
+    attended    attended[]
+
+    @@index([leader_id], map: "leader_id")
+}
+
+model attended {
+    id          BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
+    activity_id BigInt   @db.UnsignedBigInt
+    attendee_id Int      @db.UnsignedInt
+    score       Float
+    timestamp   DateTime @default(now()) @db.Timestamp(0)
+    activity    activity @relation(fields: [activity_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "attended_ibfk_1")
+    attendee    attendee @relation(fields: [attendee_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "attended_ibfk_2")
+
+    @@index([activity_id], map: "activity_id")
+    @@index([attendee_id], map: "attendee_id")
+}
+
+model attendee {
+    id          Int        @id @default(autoincrement()) @db.UnsignedInt
+    attendee_id BigInt     @db.UnsignedBigInt
+    camp_id     BigInt     @db.UnsignedBigInt
+    timestamp   DateTime   @default(now()) @db.Timestamp(0)
+    attended    attended[]
+    user        user       @relation(fields: [attendee_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "attendee_ibfk_1")
+    camp        camp       @relation(fields: [camp_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "attendee_ibfk_2")
+
+    @@index([attendee_id], map: "attendee_id")
+    @@index([camp_id], map: "camp_id")
+}
+
+model camp {
+    id           BigInt     @id @default(autoincrement()) @db.UnsignedBigInt
+    organizer_id BigInt     @db.UnsignedBigInt
+    name         String     @db.VarChar(64)
+    web          String     @db.VarChar(64)
+    timestamp    DateTime   @default(now()) @db.Timestamp(0)
+    attendee     attendee[]
+    user         user       @relation(fields: [organizer_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "camp_ibfk_1")
+    leader       leader[]
+
+    @@index([organizer_id], map: "organizer")
+}
+
+model dm {
+    id             BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
+    sender_id      BigInt   @db.UnsignedBigInt
+    recipient_id   BigInt   @db.UnsignedBigInt
+    hash           String   @db.VarChar(43)
+    timestamp      DateTime @default(now()) @db.Timestamp(0)
+    user_sender    user     @relation("sender", fields: [sender_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "dm_ibfk_1")
+    user_recipient user     @relation("recipient", fields: [recipient_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "dm_ibfk_2")
+
+    @@index([recipient_id], map: "recipient_id")
+    @@index([sender_id], map: "sender_id")
+}
+
+model file {
+    id        BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
+    type      String   @db.VarChar(64)
+    hash      String   @db.VarChar(43)
+    timestamp DateTime @default(now()) @db.Timestamp(0)
+}
+
+model leader {
+    id        BigInt     @id @default(autoincrement()) @db.UnsignedBigInt
+    camp_id   BigInt     @db.UnsignedBigInt
+    user_id   BigInt     @db.UnsignedBigInt
+    timestamp DateTime   @default(now()) @db.Timestamp(0)
+    activity  activity[]
+    camp      camp       @relation(fields: [camp_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "leader_ibfk_1")
+    user      user       @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "leader_ibfk_2")
+
+    @@index([camp_id], map: "camp_id")
+    @@index([user_id], map: "user_id")
+}

@@ -1,0 +1,26 @@
+{
+    "name": "iis-projekt",
+    "description": "Projekt do předmětu IIS na FIT VUT (2023)",
+    "version": "0.0.0",
+    "main": "lib/index.js",
+    "scripts": {
+        "deploy": "./start.sh",
+        "dev": "./dev.sh",
+        "lint": "eslint -c .eslintrc.json --ext .ts ./src"
+    },
+    "authors": [
+        {
+            "name": "Vít Hrbáček",
+            "xlogin": "xhrbac10"
+        }
+    ],
+    "devDependencies": {
+        "@types/node": ">=16",
+        "@typescript-eslint/parser": "^6.7.2",
+        "eslint": "^8.49.0",
+        "eslint-plugin-v3xlabs": "^1.6.1",
+        "typescript": "^5.2.2"
+    },
+    "keywords": [],
+    "license": "GPL-3.0-or-later"
+}
