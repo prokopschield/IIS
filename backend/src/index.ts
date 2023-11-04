@@ -72,6 +72,43 @@ export async function main() {
 					}
 				}
 			},
+
+			async attendee_my_camps(_socket, state) {
+				const user_id = BigInt(state.get("user_id") || NaN);
+
+				return success({
+					camps: await database.camp.findMany({
+						include: {
+							leader: {
+								include: {
+									user: {
+										select: {
+											legal_name: true,
+										},
+									},
+								},
+							},
+						},
+						where: {
+							attendee: { some: { attendee_id: user_id } },
+						},
+					}),
+				});
+			},
+
+			async attendee_my_activities(_socket, state) {
+				const user_id = BigInt(state.get("user_id") || NaN);
+
+				return success({
+					activities: await database.activity.findMany({
+						where: {
+							attended: {
+								some: { attendee: { attendee_id: user_id } },
+							},
+						},
+					}),
+				});
+			},
 		}
 	);
 
