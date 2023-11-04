@@ -1,5 +1,5 @@
 export function success<T extends Record<any, any>>(
-    arg: T
+	arg: T
 ): T & { success: true } {
-    return { success: true, ...arg };
+	return { success: true, ...arg };
 }
