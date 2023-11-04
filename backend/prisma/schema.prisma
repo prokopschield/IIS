@@ -38,14 +38,17 @@ model auth {
 model activity {
     id          BigInt     @id @default(autoincrement()) @db.UnsignedBigInt
     name        String     @db.VarChar(64)
+    camp_id     BigInt     @db.UnsignedBigInt
     leader_id   BigInt     @db.UnsignedBigInt
     description String     @db.Text
     points      Float
     timestamp   DateTime   @default(now()) @db.Timestamp(0)
     leader      leader     @relation(fields: [leader_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "activity_ibfk_1")
+    camp        camp       @relation(fields: [camp_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "activity_ibfk_2")
     attended    attended[]
 
     @@index([leader_id], map: "leader_id")
+    @@index([camp_id], map: "camp_id")
 }
 
 model attended {
@@ -80,6 +83,7 @@ model camp {
     name         String     @db.VarChar(64)
     web          String     @db.VarChar(64)
     timestamp    DateTime   @default(now()) @db.Timestamp(0)
+    activity     activity[]
     attendee     attendee[]
     user         user       @relation(fields: [organizer_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "camp_ibfk_1")
     leader       leader[]
