@@ -206,7 +206,7 @@ export async function main() {
 
 	const { app } = server;
 
-	app.listen(Number(process.env.PORT || 4173));
+	server.http.listen(Number(process.env.PORT || 4173));
 
 	app.get("/jwt/:hash", async (request, response, next) => {
 		try {
