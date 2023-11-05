@@ -2,6 +2,7 @@ import assert from "assert";
 import { Token, usePrivateKeyFile } from "nscdn-jwt";
 import { deserialize, serialize } from "nscdn-objects";
 import { cacheFn } from "ps-std";
+
 import { URL_BASE } from "./config";
 
 const callback_map = new Map<string, Function>();
