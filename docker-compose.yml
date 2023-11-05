@@ -8,7 +8,7 @@ services:
     backend:
         image: node:20-bullseye
         working_dir: /backend
-        command: sh -c "node lib/cli"
+        command: sh -c "yarn prisma db push && node lib/cli"
         restart: always
         depends_on:
             - db
