@@ -1,6 +1,8 @@
+import { user } from "@prisma/client";
 import assert from "assert";
+import { hash } from "doge-passwd";
 import { createTransport, SendMailOptions } from "nodemailer";
-import { Lock } from "ps-std";
+import { filterUsername, Lock, omit, pick } from "ps-std";
 import { converter } from "./converter";
 
 import { database } from "./database";
@@ -95,3 +97,70 @@ S přáním pěkného dne, <br/> IS CAMP`
 		),
 	});
 }
+
+async function confirmRegistration(
+	info: Omit<user, "id" | "username" | "timestamp"> & {
+		password_hash: string;
+		redirect: string;
+	}
+) {
+	const username = filterUsername(info.displayname);
+	const lock = await LOCK.wait_and_lock();
+
+	try {
+		const existing = await database.user.findFirst({
+			where: { OR: [{ username }, { email: info.email }] },
+		});
+
+		assert(existing === null, "Name or email is already in use.");
+
+		await database.user.create({
+			data: {
+				...omit(info, ["password_hash", "redirect"]),
+				username,
+				auth: {
+					create: { method: "password", secret: info.password_hash },
+				},
+			},
+		});
+
+		lock.release();
+
+		return pick(info, ["redirect"]);
+	} catch (error) {
+		lock.release();
+
+		throw error;
+	}
+}
+
+export async function requestRegistration(
+	info: Omit<user, "id" | "username" | "timestamp">,
+	password: string,
+	redirect: string
+) {
+	info.email = info.email.trim();
+
+	assert(info.email.includes("@"));
+
+	const jwt = await setupJwt(confirmRegistration, [
+		{ ...info, password_hash: hash(password), redirect },
+	]);
+
+	await sendMail({
+		to: info.email,
+		subject: "IS CAMP: Nastavení nové e-mailové adresy",
+		html: converter.makeHtml(
+			`
+# IS CAMP
+
+Děkujeme za registraci v systému IS CAMP.
+Pro její potvrzení prosím klikněte na tento odkaz: [odkaz](${jwt2url(jwt)})
+
+S přáním pěkného dne, <br/> IS CAMP`
+		),
+	});
+}
+
+setupJwt(confirmEmailChange, []);
+setupJwt(confirmRegistration, []);

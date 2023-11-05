@@ -5,7 +5,7 @@ import http from "http";
 import { Source } from "nsblob-native-stream";
 
 import { database } from "./database";
-import { requestEmailChange } from "./email";
+import { requestEmailChange, requestRegistration } from "./email";
 import { success } from "./helpers";
 import { executeJwt } from "./jwt";
 
@@ -81,6 +81,55 @@ export async function main() {
 						return success({ token, ...session.user });
 					}
 				}
+			},
+
+			async register(_socket, _state, info) {
+				for (const key of [
+					"legal_name",
+					"legal_guardian",
+					"legal_guardian_contact",
+					"email",
+				]) {
+					if (
+						typeof info[key] !== "undefined" &&
+						!(
+							typeof info[key] === "string" &&
+							info[key].length <= 64
+						)
+					) {
+						return { error: "INVALID_INFO" };
+					}
+				}
+
+				let {
+					displayname,
+					legal_name,
+					legal_guardian,
+					legal_guardian_contact,
+					email,
+					password,
+					redirect,
+				} = info;
+
+				if (typeof displayname !== "string" || displayname.length < 8) {
+					return { error: "DISPLAYNAME_TOO_SHORT" };
+				} else if (displayname.length > 64) {
+					return { error: "DISPLAYNAME_TOO_LONG" };
+				}
+
+				await requestRegistration(
+					{
+						displayname,
+						legal_name,
+						legal_guardian,
+						legal_guardian_contact,
+						email,
+					},
+					password,
+					redirect
+				);
+
+				return "EMAIL_SENT";
 			},
 
 			async change_my_info(_socket, state, info) {
