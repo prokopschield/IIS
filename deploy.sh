@@ -52,7 +52,7 @@ if sh -c 'cd frontend && yarn && yarn build'; then :; else
 	fail "Instalace frontendu selhala."
 fi
 
-if docker compose up --build -d; then :; else
+if docker compose up --build $*; then :; else
 	fail "Zapnutí kontejnerů selhalo"
 fi
 
