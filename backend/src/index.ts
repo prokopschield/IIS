@@ -2,8 +2,18 @@ import { Server } from "@prokopschield/simple-socket-server";
 import assert from "assert";
 import { hash, verify } from "doge-passwd";
 import http from "http";
+import { Source } from "nsblob-native-stream";
+
 import { database } from "./database";
+import { requestEmailChange } from "./email";
 import { success } from "./helpers";
+import { executeJwt } from "./jwt";
+
+Object.assign(BigInt.prototype, {
+	toJSON() {
+		return String(this);
+	},
+});
 
 export async function main() {
 	const server = new Server(
@@ -73,6 +83,39 @@ export async function main() {
 				}
 			},
 
+			async change_my_info(_socket, state, info) {
+				const user_id = BigInt(state.get("user_id") || NaN);
+
+				const {
+					displayname,
+					legal_name,
+					legal_guardian,
+					legal_guardian_contact,
+					email,
+					redirect,
+				} = info;
+
+				if (email) {
+					await requestEmailChange(
+						user_id,
+						String(email),
+						String(redirect)
+					);
+				}
+
+				return success(
+					await database.user.update({
+						data: {
+							displayname,
+							legal_name,
+							legal_guardian,
+							legal_guardian_contact,
+						},
+						where: { id: user_id },
+					})
+				);
+			},
+
 			async attendee_my_camps(_socket, state) {
 				const user_id = BigInt(state.get("user_id") || NaN);
 
@@ -115,6 +158,18 @@ export async function main() {
 	const { app } = server;
 
 	app.listen(Number(process.env.PORT || 4173));
+
+	app.get("/jwt/:hash", async (request, response, next) => {
+		try {
+			const { redirect } = await executeJwt(request.params.hash);
+
+			await Source.fromStream(request);
+
+			return response.status(302).setHeader("Location", redirect).end();
+		} catch {
+			return next();
+		}
+	});
 
 	app.use(async (request, response) => {
 		const url = new URL(request.url, "http://frontend:4173");
