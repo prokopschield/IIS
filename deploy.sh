@@ -48,7 +48,7 @@ if sh -c 'cd backend && yarn && tsc'; then :; else
 	fail "Instalace backendu selhala."
 fi
 
-if sh -c 'cd frontend && yarn && yarn dev'; then :; else
+if sh -c 'cd frontend && yarn && yarn build'; then :; else
 	fail "Instalace frontendu selhala."
 fi
 
