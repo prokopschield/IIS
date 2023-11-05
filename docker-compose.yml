@@ -19,6 +19,7 @@ services:
         environment:
             DATABASE_URI: mysql://root:${DB_PASSWORD}@db/iscamp
             PORT: 23095
+            URL_BASE: ${URL_BASE}
     db:
         image: mariadb:latest
         restart: always
