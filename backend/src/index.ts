@@ -193,6 +193,13 @@ export async function main() {
 
 				return success({
 					activities: await database.activity.findMany({
+						include: {
+							attended: {
+								where: {
+									attendee: { attendee_id: user_id },
+								},
+							},
+						},
 						where: {
 							attended: {
 								some: { attendee: { attendee_id: user_id } },
