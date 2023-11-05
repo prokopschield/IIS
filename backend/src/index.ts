@@ -129,7 +129,7 @@ export async function main() {
 					redirect
 				);
 
-				return "EMAIL_SENT";
+				return { status: "EMAIL_SENT" };
 			},
 
 			async change_my_info(_socket, state, info) {
