@@ -16,6 +16,7 @@ services:
             - "23095:23095"
         volumes:
             - ./backend:/backend
+            - ./data/backend/root:/root
         environment:
             DATABASE_URI: mysql://root:${DB_PASSWORD}@db/iscamp
             PORT: 23095
