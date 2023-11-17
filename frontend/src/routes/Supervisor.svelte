@@ -1,3 +1,3 @@
 <h1>
-	Supervisor site TBD
+	Stránka vedoucího/dozorce tábora TBD
 </h1>
