@@ -1,3 +1,3 @@
 <h1>
-	Attendee  site TBD
+	Stránka  účastníka TBD
 </h1>
