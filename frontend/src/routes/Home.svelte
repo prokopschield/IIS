@@ -8,20 +8,20 @@
 
 <Navbar>
 		<div slot="homePageContainer" class="flex-1">
-			<Button buttonClass="btn btn-ghost text-xl" >Homepage</Button>
+			<Button buttonClass="btn btn-ghost text-xl" >Domovská stránka</Button>
 		</div>
 		<div slot="centerContainer" class="flex-none">
 			<ul class="menu menu-horizontal px-1">
-				<li><a href="CampRegister.svelte">Register Camp</a></li>
+				<li><a href="CampRegister.svelte">Registrace tábora</a></li>
 				<li>
 					<details>
 						<summary>
-							Log in as
+							Přihlasit se jako
 						</summary>
 						<ul class="p-2 bg-base-100">
-							<li><a href="Organizer.svelte">Organizer</a></li>
-							<li><a href="Supervisor.svelte">Supervisor</a></li>
-							<li><a href="Attendee.svelte">Attendee</a></li>
+							<li><a href="Organizer.svelte">Organizátor tábora</a></li>
+							<li><a href="Supervisor.svelte">Vedoucí</a></li>
+							<li><a href="Attendee.svelte">Účastník</a></li>
 						</ul>
 					</details>
 				</li>
@@ -31,8 +31,8 @@
 
 <Hero>
 		<div class="max-w-md">
-			<h1 class="text-5xl font-bold">Hello there</h1>
-			<p class="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
-			<button class="btn btn-primary">Get Started</button>
+			<h1 class="text-5xl font-bold">Vítejte!</h1>
+			<p class="py-6">Pro lepší zážitek nechte zmodernizovat tábor naším informačním systémem bodovaných táborových aktivit.</p>
+			<button class="btn btn-primary">Začíname</button>
 		</div>
 </Hero>
