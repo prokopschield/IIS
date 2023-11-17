@@ -1,3 +1,3 @@
 <h1>
-	Register camp site TBD
+	Stránka registrace tábora TBD
 </h1>
