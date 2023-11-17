@@ -1,3 +1,3 @@
 <h1>
-	Organizer site TBD
+	Stránka organizátora tábora TBD
 </h1>
