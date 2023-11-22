@@ -3,6 +3,7 @@
 	import Button from "../components/Button.svelte";
 	import Hero from "../components/Hero.svelte";
 
+	// TODO Vlado
 	// Tu bude potrebne implementovat funkciu na obsluhu prihlasenia sa
 </script>
 
@@ -20,6 +21,7 @@
 							Přihlasit se jako
 						</summary>
 						<ul class="p-2 bg-base-100">
+							<!-- TODO Implement Vlado-->
 							<!-- Tuna treba Osetrtit Vito ze pred presmerovanim
 							sa musia autentifikovat, teda musia sa prihlasit. A
 							prihlasia sa v modalnom okne -->

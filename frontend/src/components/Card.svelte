@@ -12,8 +12,5 @@
 
 		<!-- Content of card will go in here-->
 		<slot name="content"></slot>
-		<div class="card-actions justify-end">
-			<Button buttonClass="btn btn-primary">Register</Button>
-		</div>
 	</div>
 </div>

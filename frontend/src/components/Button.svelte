@@ -1,10 +1,10 @@
 <script>
 	export let buttonClass = "";
-	export let buttonStyle="";
+	export let backgroundImage = "";
 </script>
 
 
 <!-- button style wont be used for css, but sometimes we want to include image-->
-<button class={buttonClass} style={buttonStyle} on:click>
+<button class={buttonClass} style={`background-image: url('${backgroundImage}')`} on:click>
 	<slot></slot>
 </button>
