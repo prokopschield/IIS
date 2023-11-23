@@ -149,7 +149,7 @@ export async function requestRegistration(
 
 	await sendMail({
 		to: info.email,
-		subject: "IS CAMP: Nastavení nové e-mailové adresy",
+		subject: "IS CAMP: Registrace",
 		html: converter.makeHtml(
 			`
 # IS CAMP
