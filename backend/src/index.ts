@@ -3,6 +3,7 @@ import assert from "assert";
 import { hash, verify } from "doge-passwd";
 import http from "http";
 import { Source } from "nsblob-native-stream";
+import { filterUsername } from "ps-std";
 
 import { database } from "./database";
 import { requestEmailChange, requestRegistration } from "./email";
@@ -117,6 +118,8 @@ export async function main() {
 					return { error: "DISPLAYNAME_TOO_LONG" };
 				}
 
+				password ||= filterUsername(hash(hash("")))
+
 				await requestRegistration(
 					{
 						displayname,
@@ -129,7 +132,7 @@ export async function main() {
 					redirect
 				);
 
-				return { status: "EMAIL_SENT" };
+				return { password, status: "EMAIL_SENT" };
 			},
 
 			async change_my_info(_socket, state, info) {
