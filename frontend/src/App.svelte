@@ -1,7 +1,8 @@
 <script lang="ts">
-    import Login from './pages/Login.svelte';
+	import Router from "svelte-spa-router";
+	import { routes } from "./routes.js";
 </script>
 
 <main>
-    <Login />
+	<Router {routes}/>
 </main>
