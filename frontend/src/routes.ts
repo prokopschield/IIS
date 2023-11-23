@@ -5,13 +5,12 @@ import Attende from "./routes/Attendee.svelte";
 import Supervisor from "./routes/Supervisor.svelte";
 import Organizer from "./routes/Organizer.svelte";
 
-
 export const routes = {
 	"/": Home,
-	"/register" : CampRegister,
-	"/organizer" : Organizer,
+	"/register": CampRegister,
+	"/organizer": Organizer,
 	"/supervisor": Supervisor,
-	"/attendee" : Attende,
+	"/attendee": Attende,
 
-	"*": NotFound
+	"*": NotFound,
 };
