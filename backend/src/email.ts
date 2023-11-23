@@ -162,5 +162,73 @@ S přáním pěkného dne, <br/> IS CAMP`
 	});
 }
 
+async function confirmPasswordReset({
+	email,
+	password_hash,
+	redirect,
+}: {
+	email: string;
+	password_hash: string;
+	redirect: string;
+}) {
+	const lock = await LOCK.wait_and_lock();
+
+	try {
+		const user = await database.user.findFirstOrThrow({ where: { email } });
+
+		await database.auth.deleteMany({
+			where: {
+				method: "password",
+				user: { email },
+			},
+		});
+
+		await database.auth.create({
+			data: {
+				user_id: user.id,
+				method: "password",
+				secret: password_hash,
+			},
+		});
+
+		lock.release();
+
+		return { redirect };
+	} catch (error) {
+		lock.release();
+
+		throw error;
+	}
+}
+
+export async function requestPasswordReset(
+	info: Omit<user, "id" | "username" | "timestamp">,
+	password: string,
+	redirect: string
+) {
+	info.email = info.email.trim();
+
+	assert(info.email.includes("@"));
+
+	const jwt = await setupJwt(confirmPasswordReset, [
+		{ ...info, password_hash: hash(password), redirect },
+	]);
+
+	await sendMail({
+		to: info.email,
+		subject: "IS CAMP: Nastavení nové e-mailové adresy",
+		html: converter.makeHtml(
+			`
+# IS CAMP
+
+Děkujeme za registraci v systému IS CAMP.
+Pro její potvrzení prosím klikněte na tento odkaz: [odkaz](${jwt2url(jwt)})
+
+S přáním pěkného dne, <br/> IS CAMP`
+		),
+	});
+}
+
 setupJwt(confirmEmailChange, []);
 setupJwt(confirmRegistration, []);
+setupJwt(confirmPasswordReset, []);
