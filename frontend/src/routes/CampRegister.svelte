@@ -1,4 +1,4 @@
-<<script>
+<script>
 	import Modal from "../components/Modal.svelte";
 	import Card from "../components/Card.svelte";
 	import Hero from "../components/Hero.svelte";
