@@ -104,7 +104,7 @@
 		}
 
 		// Check if user passed us list with attendees
-		if (emptyOrganizerList) {
+		if (!emptyOrganizerList) {
 			alert("Položka jména organizátora je prázdná.");
 		}
 
@@ -122,9 +122,6 @@
 
 		// Show modal that operation was successful
 		// TODO Vito
-		if (su) {
-			alert("Položka jména organizátora je prázdná.");
-		}
 	}
 
 	function homePageRedirect(){
