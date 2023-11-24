@@ -36,7 +36,7 @@
 		for (let index = 0; index < auxAttendeesArray.length; index++) {
 			if (auxAttendeesArray[index].value !== "") {
 				if (auxAttendeesArray[index].value.split(" ").length != 2) {
-					alert("Names of attendees must consist of firstname and surname");
+					alert("Jméno účastníka musí obsahovat křestní jméno i příjmení.");
 					return;
 				}
 
@@ -56,12 +56,12 @@
 		for (let index = 0; index < auxSupervisorsArray.length; index++) {
 			if (auxSupervisorsArray[index].value !== "") {
 				if (auxSupervisorsArray[index].value.split(" ").length != 2) {
-					alert("Names of supervisor must consist of firstname and surname");
+					alert("Jméno vedoucího musí obsahovat křestní jméno i příjmení.");
 					return;
 				}
 
 				// Add new attendee
-				emptyAttendeeList = false;
+				emptySupervisorsList = false;
 				let firstName = auxSupervisorsArray[index].value.split(" ")[0];
 				let lastName = auxSupervisorsArray[index].value.split(" ")[1];
 				const supervisor = {
@@ -75,7 +75,7 @@
 
 		// Check if user passed us list with attendees
 		if (emptySupervisorsList) {
-			alert("Supervisor list is empty");
+			alert("Seznam vedoucích je prázdný.");
 		}
 
 		let newCamp = {
@@ -108,40 +108,40 @@
 </Navbar>
 
 <Hero>
-	<Card width="120" tittle="Register Camp">
+	<Card width="120" tittle="Registrace tábora">
 
 		<!-- TODO Vito-->
 		<!-- Tu bude potrebne zobrazit Vito modalne okno ze sa chces prihlasit
 		do uctu, pokial viem bude potreba event dispatching -->
-		<Button slot="undoButton" buttonClass="btn link flex justify w-1/2 m-2">Log in as organizer</Button>
+		<Button slot="undoButton" buttonClass="btn link flex justify w-1/2 m-2">Příhlásit se jako organizátor</Button>
 
 		<div slot="content">
 			<form id="registerForm" class="space-y-3" on:submit|preventDefault={submitForm}>
-				<label for="camp_name">Camp name</label><br>
+				<label for="camp_name">Název tábora</label><br>
 				<input class="border-2 rounded-full" type="text" id="camp_name" name="camp_name" bind:value="{campName}"
-					   required><br>
-				<label for="camp_site">Camps website</label><br>
+					   required><br><br>
+				<label for="camp_site">Webová stránka tábora</label><br>
 				<input class="border-2 rounded-full" type="text" id="camp_site" name="camp_site"
 					   bind:value="{campSite}"><br><br>
 
-				<label for="camp_attendee">Camp attendees (name of attendee)</label><br><br>
+				<label for="camp_attendee">Účastníci táboru (Jména účastníků)</label><br>
 				{#each Array(attendeesCount + 1) as _,i} <!-- For cycle for lines-->
-					<input class="border-2 rounded-full" type="text" name="camp_attendee"><br><br>
+					<input class="border-2 rounded-full" type="text" name="camp_attendee"><br>
 				{/each}
 
 				<br>
-				<label for="camp_supervisor">Camp supervisors (name of supervisor)</label><br><br>
+				<label for="camp_supervisor">Camp supervisors (name of supervisor)</label><br>
 				{#each Array(supervisorsCount + 1) as _,i} <!-- For cycle for lines-->
 					<input class="border-2 rounded-full" type="text" name="camp_supervisor"><br><br>
 				{/each}
 			</form>
 			<div class="w-full mb-5">
-				<Button buttonClass="btn btn-accent w-20" on:click={addAttendee}>Add attendee</Button>
+				<Button buttonClass="btn btn-accent w-20" on:click={addAttendee}>Přidat účastníka</Button>
 			</div>
 			<div class="w-full mb-5">
-				<Button buttonClass="btn btn-accent w-20" on:click={addSupervisor}>Add supervisor</Button>
+				<Button buttonClass="btn btn-accent w-20" on:click={addSupervisor}>Přidat vedoucího</Button>
 			</div>
-			<input class="btn btn-primary" type="submit" form="registerForm" value="Register">
+			<input class="btn btn-primary" type="submit" form="registerForm" value="Registrovat se">
 		</div>
 
 	</Card>
