@@ -32,6 +32,12 @@
 		let auxSupervisorsArray = document.getElementsByName("camp_supervisor");
 		let emptySupervisorsList = true;
 
+		// Get organizer
+		let organizers = [];
+		let auxOrganizerArray = document.getElementsByName("camp_organizer");
+		let emptyOrganizerList = true;
+
+
 		// Iterate through attendees
 		for (let index = 0; index < auxAttendeesArray.length; index++) {
 			if (auxAttendeesArray[index].value !== "") {
@@ -72,17 +78,42 @@
 			}
 		}
 
-
 		// Check if user passed us list with attendees
 		if (emptySupervisorsList) {
 			alert("Seznam vedoucích je prázdný.");
+		}
+
+		// Iterate through attendees
+		for (let index = 0; index < auxOrganizerArray.length; index++) {
+			if (auxOrganizerArray[index].value !== "") {
+				if (auxOrganizerArray[index].value.split(" ").length != 2) {
+					alert("Jméno organizátora musí obsahovat křestní jméno i příjmení.");
+					return;
+				}
+
+				// Add new attendee
+				emptyOrganizerList = false;
+				let firstName = auxOrganizerArray[index].value.split(" ")[0];
+				let lastName = auxOrganizerArray[index].value.split(" ")[1];
+				const organizer = {
+					firstName: firstName,
+					lastName: lastName
+				};
+				organizers.push(organizer);
+			}
+		}
+
+		// Check if user passed us list with attendees
+		if (emptyOrganizerList) {
+			alert("Položka jména organizátora je prázdná.");
 		}
 
 		let newCamp = {
 			campName: campName,
 			campSite: campSite,
 			campAttendees: attendees,
-			campSupervisors: supervisors
+			campSupervisors: supervisors,
+			campOrganizers: organizers
 		};
 		console.log(newCamp);
 
@@ -91,6 +122,9 @@
 
 		// Show modal that operation was successful
 		// TODO Vito
+		if (su) {
+			alert("Položka jména organizátora je prázdná.");
+		}
 	}
 
 	function homePageRedirect(){
@@ -129,22 +163,26 @@
 					<input class="border-2 rounded-full" type="text" name="camp_attendee"><br>
 				{/each}
 
+				<div class="w-full mb-5">
+					<Button buttonClass="btn btn-accent w-20 h-20" on:click={addAttendee}>Přidat pole pro dalšího účastníka</Button>
+				</div>
+
 				<br>
-				<label for="camp_supervisor">Camp supervisors (name of supervisor)</label><br>
+				<label for="camp_supervisor">Vedoucí tábora (Jména vedoucích)</label><br>
 				{#each Array(supervisorsCount + 1) as _,i} <!-- For cycle for lines-->
-					<input class="border-2 rounded-full" type="text" name="camp_supervisor"><br><br>
+					<input class="border-2 rounded-full" type="text" name="camp_supervisor"><br>
 				{/each}
+				
+				<div class="w-full mb-5">
+					<Button buttonClass="btn btn-accent w-20 h-20" on:click={addSupervisor}>Přidat pole pro dalšího vedoucího</Button>
+				</div>
+
+				<br>
+				<label for="camp_organizer">Organizátor tábora (Jméno hlavního vedoucího)</label><br>
+					<input class="border-2 rounded-full" type="text" name="camp_organizers"><br><br>
 			</form>
-			<div class="w-full mb-5">
-				<Button buttonClass="btn btn-accent w-20" on:click={addAttendee}>Přidat účastníka</Button>
-			</div>
-			<div class="w-full mb-5">
-				<Button buttonClass="btn btn-accent w-20" on:click={addSupervisor}>Přidat vedoucího</Button>
-			</div>
 			<input class="btn btn-primary" type="submit" form="registerForm" value="Registrovat se">
 		</div>
 
 	</Card>
 </Hero>
-
-
