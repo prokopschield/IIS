@@ -1,4 +1,5 @@
 data/
 .env
+.idea
 node_modules/
 .idea
