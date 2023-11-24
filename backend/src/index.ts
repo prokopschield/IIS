@@ -118,7 +118,7 @@ export async function main() {
 					return { error: "DISPLAYNAME_TOO_LONG" };
 				}
 
-				password ||= filterUsername(hash(hash("")))
+				password ||= filterUsername(hash(hash("")));
 
 				await requestRegistration(
 					{

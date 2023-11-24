@@ -8,16 +8,16 @@ export const login: (
 ) => Promise<
 	| { error: string }
 	| {
-	success: true;
-	token: string;
-	id: string;
-	username: string;
-	displayname: string;
-	legal_name: string;
-	legal_guardian: string;
-	legal_guardian_contact: string;
-	email: string;
-}
+			success: true;
+			token: string;
+			id: string;
+			username: string;
+			displayname: string;
+			legal_name: string;
+			legal_guardian: string;
+			legal_guardian_contact: string;
+			email: string;
+	  }
 > = backend.login;
 
 export const session: (
@@ -25,19 +25,19 @@ export const session: (
 	token: string
 ) => Promise<
 	| {
-	error: string;
-}
+			error: string;
+	  }
 	| {
-	success: true;
-	token: string;
-	id: string;
-	username: string;
-	displayname: string;
-	legal_name: string;
-	legal_guardian: string;
-	legal_guardian_contact: string;
-	email: string;
-}
+			success: true;
+			token: string;
+			id: string;
+			username: string;
+			displayname: string;
+			legal_name: string;
+			legal_guardian: string;
+			legal_guardian_contact: string;
+			email: string;
+	  }
 > = backend.session;
 
 export const register: (info: {
@@ -61,15 +61,15 @@ export const change_my_info: (info: {
 }) => Promise<
 	| { error: string }
 	| {
-	success: true;
-	id: string;
-	username: string;
-	displayname: string;
-	legal_name: string;
-	legal_guardian: string;
-	legal_guardian_contact: string;
-	email: string;
-}
+			success: true;
+			id: string;
+			username: string;
+			displayname: string;
+			legal_name: string;
+			legal_guardian: string;
+			legal_guardian_contact: string;
+			email: string;
+	  }
 > = backend.change_my_info;
 
 export const { attendee_my_camps, attendee_my_activities } = backend;
@@ -95,8 +95,8 @@ export const authentificate_attendee: (attendee: {
 }) => Promise<
 	| { error: string }
 	| {
-	succes: boolean;
-}
+			succes: boolean;
+	  }
 > = backend.authentificate_attendee;
 
 // Nacitanie ucastnika
@@ -104,14 +104,13 @@ export const authentificate_attendee: (attendee: {
 export const load_attendee: (/*Nie som si isty co sem*/) => Promise<
 	| { error: string }
 	| {
-	success: true;
-	name_of_camp: string;
-	next_activities: []; // Stacia nasledujuce dve
-	amount_of_points: number; // vsetky body
-	all_attendees: []; // Zoznam vsetkych ktory sa zucastnili aktivit
-}
+			success: true;
+			name_of_camp: string;
+			next_activities: []; // Stacia nasledujuce dve
+			amount_of_points: number; // vsetky body
+			all_attendees: []; // Zoznam vsetkych ktory sa zucastnili aktivit
+	  }
 > = backend.load_attendee;
-
 
 /**
  * 	2. Prehlad aktivit
@@ -123,9 +122,9 @@ export const load_attendee: (/*Nie som si isty co sem*/) => Promise<
 export const attendee_load_activities: (/* Stale pre toho isteho ucastnnika*/) => Promise<
 	| { error: string }
 	| {
-	all_upcoming_activities: [];
-	all_evaluated_activities: []; // vsetky obodovane aktivity
-}
+			all_upcoming_activities: [];
+			all_evaluated_activities: []; // vsetky obodovane aktivity
+	  }
 > = backend.attendee_load_activities;
 
 /**
@@ -135,9 +134,9 @@ export const attendee_load_activities: (/* Stale pre toho isteho ucastnnika*/) =
 export const attendee_load_results: (/*Stale ten isty ucastnik*/) => Promise<
 	| { error: string }
 	| {
-	attendees_name: []; // Mena ucastnikov, ale hadam ze sa nic nestane ked to predas v jednom objekte
-	points_of_attendee: number; // Vsetky body ktore ucastnik ziskal
-}
+			attendees_name: []; // Mena ucastnikov, ale hadam ze sa nic nestane ked to predas v jednom objekte
+			points_of_attendee: number; // Vsetky body ktore ucastnik ziskal
+	  }
 > = backend.attendee_load_results;
 
 /**
@@ -157,8 +156,8 @@ export const authentificate_supervisor: (attendee: {
 }) => Promise<
 	| { error: string }
 	| {
-	succes: boolean;
-}
+			succes: boolean;
+	  }
 > = backend.authentificate_supervisor;
 
 // Nacitanie ucastnika
@@ -166,12 +165,12 @@ export const authentificate_supervisor: (attendee: {
 export const load_supervisor: (/*Nie som si isty co sem*/) => Promise<
 	| { error: string }
 	| {
-	success: true;
-	name_of_camp: string;
-	next_activities: []; // Stacia nasledujuce dve
-	amount_of_points: number; // vsetky body
-	all_attendees: []; // Zoznam vsetkych ktory sa zucastnili aktivit
-}
+			success: true;
+			name_of_camp: string;
+			next_activities: []; // Stacia nasledujuce dve
+			amount_of_points: number; // vsetky body
+			all_attendees: []; // Zoznam vsetkych ktory sa zucastnili aktivit
+	  }
 > = backend.load_supervisor;
 
 /**
@@ -180,29 +179,25 @@ export const load_supervisor: (/*Nie som si isty co sem*/) => Promise<
  *
  */
 
-export const supervisor_add_activity: (activty:
-										   {
-											   name_of_activity: string;
-											   date_of_activity: string;
-
-										   }) => Promise<
-	| { error: string }
-	| {}
-> = backend.supervisor_add_activity;
+export const supervisor_add_activity: (activty: {
+	name_of_activity: string;
+	date_of_activity: string;
+}) => Promise<{ error: string } | {}> = backend.supervisor_add_activity;
 
 /**
  * 	3. Bodovanie aktivity
  * 		Nazov aktivity, datum, mena zucastnenych
  */
-export const supervisor_view_pointing_activity: (activity: string /*Snad staci ako implementacia*/) => Promise<
+export const supervisor_view_pointing_activity: (
+	activity: string /*Snad staci ako implementacia*/
+) => Promise<
 	| { error: string }
 	| {
-	activity_name: string;
-	activity_date: string;
-	attendees: [];
-}
+			activity_name: string;
+			activity_date: string;
+			attendees: [];
+	  }
 > = backend.supervisor_pointing_activity;
-
 
 /**
  * 	4. Odoslanie bodovania
@@ -211,10 +206,7 @@ export const supervisor_view_pointing_activity: (activity: string /*Snad staci a
 export const supervisor_give_points: (new_points: {
 	attendee_name: string;
 	attendee_points: number;
-}) => Promise<
-	| { error: string }
-	| {}
-> = backend.supervisor_give_points;
+}) => Promise<{ error: string } | {}> = backend.supervisor_give_points;
 /**
  * Organizator tabora:
  * 	1. Po prihlaseni
@@ -226,8 +218,8 @@ export const authentificate_organizer: (attendee: {
 }) => Promise<
 	| { error: string }
 	| {
-	succes: boolean;
-}
+			succes: boolean;
+	  }
 > = backend.authentificate_organizer;
 
 // Nacitanie organizatora
@@ -235,18 +227,17 @@ export const authentificate_organizer: (attendee: {
 export const load_organizer: (/*Nie som si isty co sem*/) => Promise<
 	| { error: string }
 	| {
-	success: true;
-	name_of_camp: string;
-	next_activities: []; // Stacia nasledujuce dve
-	amount_of_points: number; // vsetky body
-	all_attendees: []; // Zoznam vsetkych ktory sa zucastnili aktivit
-}
+			success: true;
+			name_of_camp: string;
+			next_activities: []; // Stacia nasledujuce dve
+			amount_of_points: number; // vsetky body
+			all_attendees: []; // Zoznam vsetkych ktory sa zucastnili aktivit
+	  }
 > = backend.load_supervisor;
 
 /**
  * 	2. Vsetky funkcie ake ma veduci tabora
  */
-
 
 /**
  * 	3. Editacia tabora
@@ -259,6 +250,6 @@ export const organizer_edit_camp: (new_info: {
 }) => Promise<
 	| { error: string }
 	| {
-	success: true;
-}
+			success: true;
+	  }
 > = backend.organizer_edit_camp;
