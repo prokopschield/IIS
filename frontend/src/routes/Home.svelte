@@ -10,11 +10,11 @@
 
 <Navbar>
 		<div slot="homePageContainer" class="flex-1">
-			<Button buttonClass="btn btn-ghost text-xl" >Domovská stránka</Button>
+<!--			<Button buttonClass="btn btn-ghost text-xl" >Domovská stránka</Button>-->
 		</div>
 		<div slot="centerContainer" class="flex-none">
 			<ul class="menu menu-horizontal px-1">
-				<li><a href="CampRegister.svelte">Registrace tábora</a></li>
+				<li><a href="#/register">Registrace tábora</a></li>
 				<li>
 					<details>
 						<summary>
@@ -25,9 +25,9 @@
 							<!-- Tuna treba Osetrtit Vito ze pred presmerovanim
 							sa musia autentifikovat, teda musia sa prihlasit. A
 							prihlasia sa v modalnom okne -->
-							<li><a href="Organizer.svelte">Organizátor tábora</a></li>
-							<li><a href="Supervisor.svelte">Vedoucí</a></li>
-							<li><a href="Attendee.svelte">Účastník</a></li>
+							<li><a href="#/organizer">Organizátor tábora</a></li>
+							<li><a href="#/supervisor">Vedoucí</a></li>
+							<li><a href="#/attendee">Účastník</a></li>
 						</ul>
 					</details>
 				</li>

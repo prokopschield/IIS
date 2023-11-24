@@ -1,10 +1,16 @@
 <script>
+	import {createEventDispatcher} from "svelte";
+
 	export let buttonClass = "";
-	export let backgroundImage = "";
+
+	const dispatch = createEventDispatcher();
+
+	function handleClick(){
+		dispatch('click');
+	}
 </script>
 
 
-<!-- button style wont be used for css, but sometimes we want to include image-->
-<button class={buttonClass} style={`background-image: url('${backgroundImage}')`} on:click>
+<button class={buttonClass} on:click={handleClick}>
 	<slot></slot>
 </button>
