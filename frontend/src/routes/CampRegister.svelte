@@ -1,4 +1,4 @@
-<script>
+<<script>
 	import Modal from "../components/Modal.svelte";
 	import Card from "../components/Card.svelte";
 	import Hero from "../components/Hero.svelte";
@@ -11,6 +11,7 @@
 
 	let attendeesCount = 0;
 	let supervisorsCount = 0;
+	let organizerCount = 0;
 
 	function addAttendee() {
 		attendeesCount = attendeesCount + 1;
@@ -104,8 +105,8 @@
 		}
 
 		// Check if user passed us list with attendees
-		if (!emptyOrganizerList) {
-			alert("Položka jména organizátora je prázdná.");
+		if (emptyOrganizerList) {
+			alert("Položka pro jméno organizátora je prázdná.");
 		}
 
 		let newCamp = {
@@ -176,7 +177,9 @@
 
 				<br>
 				<label for="camp_organizer">Organizátor tábora (Jméno hlavního vedoucího)</label><br>
-					<input class="border-2 rounded-full" type="text" name="camp_organizers"><br><br>
+				{#each Array(organizerCount + 1) as _,i} <!-- For cycle for lines-->
+					<input class="border-2 rounded-full" type="text" name="camp_organizer"><br><br>
+				{/each}
 			</form>
 			<input class="btn btn-primary" type="submit" form="registerForm" value="Registrovat se">
 		</div>
