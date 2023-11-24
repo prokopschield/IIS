@@ -1,9 +1,10 @@
-<<script>
+<script>
 	import Modal from "../components/Modal.svelte";
 	import Card from "../components/Card.svelte";
 	import Hero from "../components/Hero.svelte";
 	import Button from "../components/Button.svelte";
 	import Navbar from "../components/Navbar.svelte";
+	import SimpleModal,{getModal} from '../components/SimpleModal.svelte'
 
 	// Camp info
 	let campName = "";
@@ -12,6 +13,8 @@
 	let attendeesCount = 0;
 	let supervisorsCount = 0;
 	let organizerCount = 0;
+
+	let MessageAfterRegistration = "Zatím jste nebyl zaregistrován.";
 
 	function addAttendee() {
 		attendeesCount = attendeesCount + 1;
@@ -119,7 +122,16 @@
 		console.log(newCamp);
 
 		// Send data to back end
+		let RegistrationSuccess = false;
 		// TODO Vlado
+
+		RegistrationSuccess = true;
+
+		if(RegistrationSuccess){
+			MessageAfterRegistration = "Byl jste úspěšně zaregistrován.";
+		}
+		
+		getModal().open();
 
 		// Show modal that operation was successful
 		// TODO Vito
@@ -186,3 +198,8 @@
 
 	</Card>
 </Hero>
+
+<!-- the modal without an `id` -->
+<SimpleModal>
+	<h1>{MessageAfterRegistration}</h1>
+</SimpleModal>
