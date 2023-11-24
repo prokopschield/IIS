@@ -86,7 +86,7 @@ export const { attendee_my_camps, attendee_my_activities } = backend;
  * Posledne bodovane aktivity, staci 2
  * Celkovy pocet bodov
  * Zoznam ucastnikov
-*/
+ */
 
 // Toto je vlastne autentifikacia ucastnika
 export const authentificate_attendee: (attendee: {
@@ -123,9 +123,9 @@ export const load_attendee: (/*Nie som si isty co sem*/) => Promise<
 export const attendee_load_activities: (/* Stale pre toho isteho ucastnnika*/) => Promise<
 	| { error: string }
 	| {
-		all_upcoming_activities: [];
-		all_evaluated_activities: []; // vsetky obodovane aktivity
-	}
+	all_upcoming_activities: [];
+	all_evaluated_activities: []; // vsetky obodovane aktivity
+}
 > = backend.attendee_load_activities;
 
 /**
@@ -135,9 +135,9 @@ export const attendee_load_activities: (/* Stale pre toho isteho ucastnnika*/) =
 export const attendee_load_results: (/*Stale ten isty ucastnik*/) => Promise<
 	| { error: string }
 	| {
-		attendees_name: []; // Mena ucastnikov, ale hadam ze sa nic nestane ked to predas v jednom objekte
-		points_of_attendee: number; // Vsetky body ktore ucastnik ziskal
-	}
+	attendees_name: []; // Mena ucastnikov, ale hadam ze sa nic nestane ked to predas v jednom objekte
+	points_of_attendee: number; // Vsetky body ktore ucastnik ziskal
+}
 > = backend.attendee_load_results;
 
 /**
@@ -187,25 +187,78 @@ export const supervisor_add_activity: (activty:
 
 										   }) => Promise<
 	| { error: string }
-	| {
-
-}
+	| {}
 > = backend.supervisor_add_activity;
 
 /**
  * 	3. Bodovanie aktivity
  * 		Nazov aktivity, datum, mena zucastnenych
- *
- * 	3. Odoslanie bodovania
+ */
+export const supervisor_view_pointing_activity: (activity: string /*Snad staci ako implementacia*/) => Promise<
+	| { error: string }
+	| {
+	activity_name: string;
+	activity_date: string;
+	attendees: [];
+}
+> = backend.supervisor_pointing_activity;
+
+
+/**
+ * 	4. Odoslanie bodovania
  * 		kazdemu ucastnikovi priradime body
- *
+ */
+export const supervisor_give_points: (new_points: {
+	attendee_name: string;
+	attendee_points: number;
+}) => Promise<
+	| { error: string }
+	| {}
+> = backend.supervisor_give_points;
+/**
  * Organizator tabora:
  * 	1. Po prihlaseni
  * 		To iste ako ucastnik
- *
- * 	2. Vsetky aktivity ako veduci tabora
- *
+ */
+export const authentificate_organizer: (attendee: {
+	name: string;
+	password: string;
+}) => Promise<
+	| { error: string }
+	| {
+	succes: boolean;
+}
+> = backend.authentificate_organizer;
+
+// Nacitanie organizatora
+// Niesom si isty ako ho identifikovat ale asi hadam ze pomocou Session ID ?
+export const load_organizer: (/*Nie som si isty co sem*/) => Promise<
+	| { error: string }
+	| {
+	success: true;
+	name_of_camp: string;
+	next_activities: []; // Stacia nasledujuce dve
+	amount_of_points: number; // vsetky body
+	all_attendees: []; // Zoznam vsetkych ktory sa zucastnili aktivit
+}
+> = backend.load_supervisor;
+
+/**
+ * 	2. Vsetky funkcie ake ma veduci tabora
+ */
+
+
+/**
  * 	3. Editacia tabora
  * 		Pridanie veducich/ucastnikov, zmenit nazov tabora
  */
-
+export const organizer_edit_camp: (new_info: {
+	new_supervisors: [];
+	new_attendees: [];
+	new_camp_name: string;
+}) => Promise<
+	| { error: string }
+	| {
+	success: true;
+}
+> = backend.organizer_edit_camp;
