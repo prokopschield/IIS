@@ -3,6 +3,10 @@
 	import Button from "../components/Button.svelte";
 	import Hero from "../components/Hero.svelte";
 
+	function redirectCampRegister(){
+		location.href="#/register";
+	}
+
 	// TODO Vlado
 	// Tu bude potrebne implementovat funkciu na obsluhu prihlasenia sa
 </script>
@@ -39,6 +43,6 @@
 		<div class="max-w-md">
 			<h1 class="text-5xl font-bold">Vítejte!</h1>
 			<p class="py-6">Pro lepší zážitek nechte zmodernizovat tábor naším informačním systémem bodovaných táborových aktivit.</p>
-			<button class="btn btn-primary" >Začíname</button> <!-- Na kliknutie Vito treba presmerovat na Camp Register nech si prihlasia camp-->
+			<Button buttonClass="btn btn-primary" on:click={redirectCampRegister}>Začíname</Button> <!-- Na kliknutie Vito treba presmerovat na Camp Register nech si prihlasia camp-->
 		</div>
 </Hero>
