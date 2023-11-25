@@ -3,7 +3,9 @@ import assert from "assert";
 import { hash, verify } from "doge-passwd";
 import http from "http";
 import { Source } from "nsblob-native-stream";
+import path from "path";
 import { filterUsername } from "ps-std";
+import { listener, uploadStream } from "v3cdn.nodesite.eu";
 
 import { database } from "./database";
 import { requestEmailChange, requestRegistration } from "./email";
@@ -237,6 +239,37 @@ export async function main() {
 		} catch {
 			return next();
 		}
+	});
+
+	app.get("/file/:id", async (request, response) => {
+		const id = Number(request.params.id);
+		const file = await database.file.findFirst({ where: { id } });
+
+		if (file) {
+			request.url = "/" + file.hash;
+
+			return listener(request, response);
+		} else {
+			response.sendStatus(404);
+		}
+	});
+
+	app.put("/file/new", async (request, response) => {
+		const type = request.headers["content-type"] || "text/plain";
+
+		const { pathname } = await uploadStream(
+			request,
+			path.basename(request.url),
+			type
+		);
+
+		const hash = pathname.slice(1);
+
+		const { id } = await database.file.create({
+			data: { hash, type },
+		});
+
+		return id;
 	});
 
 	app.use(async (request, response) => {
