@@ -1,5 +1,7 @@
 import { createClient } from "@prokopschield/simple-socket-client";
 
+import { state } from "./state.js";
+
 export const [backend, socket] = createClient("https://camp.fitvut.cz");
 
 export const login: (
@@ -92,12 +94,16 @@ export const { attendee_my_camps, attendee_my_activities } = backend;
 export const authentificate_attendee: (attendee: {
 	name: string;
 	password: string;
-}) => Promise<
-	| { error: string }
-	| {
-			succes: boolean;
-	  }
-> = backend.authentificate_attendee;
+}) => Promise<void> = async ({ name, password }) => {
+	const response = await login(name, password);
+
+	if ("error" in response) {
+		throw response.error;
+	}
+
+	state("token").set(response.token);
+	state("user").set(response);
+};
 
 // Nacitanie ucastnika
 // Niesom si isty ako ho identifikovat ale asi hadam ze pomocou Session ID ?
