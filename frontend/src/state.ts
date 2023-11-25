@@ -1,5 +1,5 @@
 import { encode, decode } from "doge-don";
-import { cacheFn } from "ps-std";
+import { cacheFn, defineGlobal } from "ps-std";
 import { writable } from "svelte/store";
 
 export const state = cacheFn(<T>(key: string) => {
@@ -24,3 +24,5 @@ export const state = cacheFn(<T>(key: string) => {
 		...store,
 	};
 });
+
+defineGlobal("state", state);
