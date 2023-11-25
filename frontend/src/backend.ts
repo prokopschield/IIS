@@ -110,11 +110,13 @@ export const authentificate_attendee: (attendee: {
 export const load_attendee: (/*Nie som si isty co sem*/) => Promise<
 	| { error: string }
 	| {
-			success: true;
+		success: true;
+		camps: {
 			name_of_camp: string;
 			next_activities: []; // Stacia nasledujuce dve
 			amount_of_points: number; // vsetky body
 			all_attendees: []; // Zoznam vsetkych ktory sa zucastnili aktivit
+		}[]
 	  }
 > = backend.load_attendee;
 
