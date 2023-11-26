@@ -11,6 +11,8 @@
 		<h2 class="card-title">{tittle}</h2>
 
 		<!-- Content of card will go in here-->
-		<slot name="content"></slot>
+		<slot name="content">
+
+		</slot>
 	</div>
 </div>

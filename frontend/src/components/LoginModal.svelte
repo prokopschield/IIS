@@ -1,7 +1,7 @@
 <script>
-	import Modal from "./Modal.svelte";
+	import Modal from "./shared/Modal.svelte";
 	import { createEventDispatcher } from "svelte";
-	import Button from "./Button.svelte";
+	import Button from "./shared/Button.svelte";
 
 	export let modalId = "login_modal"; // Default value
 	export let whoLogs = "";	// Parameter of who uses the login modal

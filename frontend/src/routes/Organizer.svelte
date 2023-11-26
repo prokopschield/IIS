@@ -1,6 +1,6 @@
 <script>
-	import Button from "../components/Button.svelte";
-	import Navbar from "../components/Navbar.svelte";
+	import Button from "../components/shared/Button.svelte";
+	import Navbar from "../components/shared/Navbar.svelte";
 </script>
 
 <Navbar>

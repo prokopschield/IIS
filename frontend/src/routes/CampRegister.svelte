@@ -1,8 +1,8 @@
 <script>
-	import Card from "../components/Card.svelte";
-	import Hero from "../components/Hero.svelte";
-	import Button from "../components/Button.svelte";
-	import Navbar from "../components/Navbar.svelte";
+	import Card from "../components/shared/Card.svelte";
+	import Hero from "../components/shared/Hero.svelte";
+	import Button from "../components/shared/Button.svelte";
+	import Navbar from "../components/shared/Navbar.svelte";
 
 	// Camp info
 	let campName = "";

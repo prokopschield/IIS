@@ -1,7 +1,7 @@
 <script>
-	import Navbar from "../components/Navbar.svelte";
-	import Button from "../components/Button.svelte";
-	import Hero from "../components/Hero.svelte";
+	import Navbar from "../components/shared/Navbar.svelte";
+	import Button from "../components/shared/Button.svelte";
+	import Hero from "../components/shared/Hero.svelte";
 	import LoginModal from "../components/LoginModal.svelte";
 
 	let modalName = "login_modal";
