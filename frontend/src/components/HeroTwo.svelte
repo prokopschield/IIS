@@ -1,5 +1,5 @@
 <script>
-	import Button from "./Button.svelte";
+	import Button from "../Button.svelte";
 </script>
 
 <div class="text-center min-h-screen bg-base-200">
