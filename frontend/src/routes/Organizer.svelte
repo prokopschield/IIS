@@ -1,7 +1,7 @@
 <script>
-	import Button from "../components/Button.svelte";
-	import Navbar from "../components/Navbar.svelte";
-	import HeroTwo from "../components/HeroTwo.svelte";
+	import Button from "../components/shared/Button.svelte";
+	import Navbar from "../components/shared/Navbar.svelte";
+	import HeroTwo from "../components/shared/HeroTwo.svelte";
 	
 	// Camp info
 	let campName = "Současný název tábora";
@@ -26,7 +26,7 @@
 	}
 
 	function addSupervisior() {
-		supervisorsCount = supervisorsCount + 1;
+		supervisorsCount = supervisorsCount + 1 + 0;
 	}
 
 	function modalShowResult() {
