@@ -5,6 +5,7 @@
 	import ForgotPassword from "./pages/Auth/ForgotPassword.svelte";
 	import Login from "./pages/Auth/Login.svelte";
 	import Register from "./pages/Auth/Register.svelte";
+	import Home from "./pages/Home.svelte";
 </script>
 
 <div class="navbar">
@@ -22,6 +23,8 @@
 		<ForgotPassword />
 	{:else if !$authenticated}
 		<Login />
+	{:else if $page === "/"}
+		<Home />
 	{:else if $page === "/attendee/camp"}
 		<Camp />
 	{:else if $page === "/attendee/my_camps"}
