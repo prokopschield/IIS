@@ -26,7 +26,7 @@
 	];
 
 	function homePageRedirect() {
-		location.href = "#/";
+		state("page").set("$1");
 	}
 
 	function addChat() {

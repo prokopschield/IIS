@@ -138,7 +138,7 @@
             ModalMessage = "Byl jste úspěšně zaregistrován.";
             modalShowRegistration();
             console.log("149 Inside RegistrationSuccess");
-            location.href = "#/organizer";
+            state("page").set("$1");
         } else if ('error' in result) {
             ModalMessage = result.error;
             modalShowRegistration();
@@ -173,7 +173,7 @@
     }
 
     function homePageRedirect() {
-        location.href = "#/";
+        state("page").set("$1");
     }
 </script>
 
