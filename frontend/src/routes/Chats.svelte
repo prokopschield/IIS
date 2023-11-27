@@ -5,15 +5,16 @@
 	
 	// Camp info
 	let campName = "Současný název tábora";
-	let ModalMessage = "Neúspěch."
+	let chosedChatter = "Dan Janský"
 
-	// let zprávy = [{"Dan J.", "Já ti řákal, že to tak není."}, {"Honza P.", "Neříkal, ty si říkal, že to tak není"}, {"Dan J.", "To už je jedno. Musíme vyřešit, jak se k nám Klára do týmu vrátí."}, {"Honza P.", "Nepřesvědčíme radši třeba Evu?"},];
+	let chatMessages = [["Dan Janský", "Já ti říkal, že to tak není. Už od začátku jsme měli dát na mě."], ["Honza Peterka", "Ne, neříkal. Ale o tom, jak máme postavit tu trojproudovku si básnil půlhodiny."], ["Dan Janský", "To už je jedno. Musíme vyřešit, jak se k nám Klára do týmu vrátí."], ["Honza Peterka", "Nepřesvědčíme radši třeba Evu?"], ["Dan Janský", "Eva je super nápad. Hned jí zkusím napsat."], ["Honza Peterka", "Já ji radši taky napíšu."],];
 
 	function homePageRedirect() {
 		location.href = "#/"; 
 	}
 
 	function addChat() {
+		alert("Zpráva by byla úspěšně odeslána, kdyby jsme to napojili na backend...")
 	}
 
 </script>
@@ -31,31 +32,39 @@
 
 <HeroTwo>
 	<div><h1 class="text-5xl font-bold">Soukromé zprávy s účastníkem</h1><br></div>
-	<div><h1 class="text-3xl">Dan Janský</h1><br></div>
+	<div><h1 class="text-3xl">{chosedChatter}</h1><br></div>
 	<div>
-		<form id="changeCampName" class="space-y-3" on:submit|preventDefault={addChat}>
+		<form id="newMessage" class="space-y-3" on:submit|preventDefault={addChat}>
 			<label for="camp_name">Napsat: </label>
-			<input class="border-2 rounded-full" type="text" id="camp_name" name="camp_name" 
-				   required><br>
-		</form><input class="btn btn-primary" type="submit" form="changeCampName" value="Přidat novou zprávu">
+			<input class="border-2 rounded-full" style="width: 500px" type="text" id="camp_name" name="camp_name" 
+				   required>
+		</form><input class="btn btn-primary" type="submit" form="newMessage" value="Přidat novou zprávu">
 	</div>
 	<br><br><br>
 
 	<div>
-			{#each Array(+ 1) as _,i} <!-- For cycle for lines-->
-            <div class="chat chat-start">
-                <div class="chat-header">
-                  Obi-Wan Kenobi
-                </div>
-                <div class="chat-bubble">You were the Chosen One!</div>
-                <div class="chat-footer opacity-50">
-                  Seen
-                </div>
-            </div>
+			{#each chatMessages as item} <!-- For cycle for lines-->
+			  {#if item[0] === chosedChatter}
+			  <div class="chat chat-end" style="padding: 20px"> 
+				<div class="chat-header">
+					{item[0]}
+				  </div>
+				  <div class="chat-bubble">{item[1]}</div>
+			  </div>
+			  {:else}
+			  <div class="chat chat-start" style="padding: 20px"> <!-- Message on left -->
+				<div class="chat-header ">
+					Já, {item[0]}
+				  </div>
+				  <div class="chat-bubble chat-bubble-info">{item[1]}</div>
+			  </div>
+			  {/if}
 			{/each}
 		<br>
 	</div>
 	
 </HeroTwo>
+
+
 
 
