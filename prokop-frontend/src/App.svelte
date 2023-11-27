@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { loading, page } from "./lib/state";
+	import ForgotPassword from "./pages/ForgotPassword.svelte";
 	import Login from "./pages/Login.svelte";
 	import Register from "./pages/Register.svelte";
 </script>
@@ -11,5 +12,7 @@
 		<Login />
 	{:else if $page === "/register"}
 		<Register />
+	{:else if $page === "/recover"}
+		<ForgotPassword />
 	{/if}
 </main>
