@@ -21,6 +21,9 @@ services:
             DATABASE_URL: mysql://root:${DB_PASSWORD}@db/iscamp
             PORT: 23095
             URL_BASE: ${URL_BASE}
+            MAIL_HOST: ${MAIL_HOST}
+            MAIL_USER: ${MAIL_USER}
+            MAIL_PASS: ${MAIL_PASS}
     db:
         image: mariadb:latest
         restart: always
@@ -36,4 +39,4 @@ services:
         depends_on:
             - backend
         volumes:
-            - ./frontend:/frontend
+            - ./prokop-frontend:/frontend
