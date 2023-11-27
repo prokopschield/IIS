@@ -489,6 +489,58 @@ export async function main() {
 
 				return { success: true, activity };
 			},
+
+			async leader_set_score(
+				_socket,
+				state,
+				activity_id,
+				attendee_id,
+				score
+			) {
+				const user_id = BigInt(state.get("user_id") || NaN);
+
+				assert(typeof activity_id === "number");
+				assert(typeof attendee_id === "number");
+				assert(typeof score === "number");
+
+				const attendee = await database.attendee.findFirstOrThrow({
+					where: { id: attendee_id },
+				});
+
+				const activity = await database.activity.findFirstOrThrow({
+					where: {
+						id: activity_id,
+					},
+					include: {
+						leader: true,
+					},
+				});
+
+				assert(activity.leader.user_id === user_id);
+				assert(attendee.camp_id === activity.camp_id);
+
+				const existing = await database.attended.findFirst({
+					where: {
+						activity_id,
+						attendee_id,
+					},
+				});
+
+				const attended = existing
+					? await database.attended.update({
+							where: { id: existing.id },
+							data: { score, timestamp: new Date() },
+					  })
+					: await database.attended.create({
+							data: {
+								activity_id,
+								attendee_id,
+								score,
+							},
+					  });
+
+				return { success: true, attended };
+			},
 		}
 	);
 
