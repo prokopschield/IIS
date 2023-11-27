@@ -6,6 +6,8 @@
 	import LeaderCamp from "./pages/Leader/Camp.svelte";
 	import LeaderMyCamps from "./pages/Leader/MyCamps.svelte";
 	import LeaderNewActivity from "./pages/Leader/NewActivity.svelte";
+	import OrganizerCamp from "./pages/Organizer/Camp.svelte";
+	import OrganizerMyCamps from "./pages/Organizer/MyCamps.svelte";
 	import AuthForgotPassword from "./pages/Auth/ForgotPassword.svelte";
 	import AuthLogin from "./pages/Auth/Login.svelte";
 	import AuthRegister from "./pages/Auth/Register.svelte";
@@ -47,6 +49,10 @@
 		<LeaderMyCamps />
 	{:else if $page === "/leader/new_activity"}
 		<LeaderNewActivity />
+	{:else if $page === "/organizer/camp"}
+		<OrganizerCamp />
+	{:else if $page === "/organizer/my_camps"}
+		<OrganizerMyCamps />
 	{:else}
 		{(page.set("/"), "Stránka nenalezena.")}
 	{/if}
