@@ -228,7 +228,7 @@ export const authentificate_organizer: (attendee: {
 	  }
 > = backend.authentificate_organizer;
 
-export const register_organizer: (newCamp:{
+export const register_organizer: (newCamp: {
 	campName: string;
 	campSite: string;
 	campAttendees: Array<string>;
@@ -237,8 +237,9 @@ export const register_organizer: (newCamp:{
 }) => Promise<
 	| { error: string }
 	| {
-	succes: true;
-} >= backend.register_organizer;
+			succes: true;
+	  }
+> = backend.register_organizer;
 
 // Nacitanie organizatora
 // Niesom si isty ako ho identifikovat ale asi hadam ze pomocou Session ID ?
