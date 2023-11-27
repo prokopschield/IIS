@@ -122,15 +122,6 @@
 		border-radius: 4px;
 	}
 
-	button {
-		margin-top: 20px;
-		padding: 10px;
-		background-color: #4caf50;
-		color: #fff;
-		border: none;
-		border-radius: 4px;
-		cursor: pointer;
-	}
 
 	@media (prefers-color-scheme: dark) {
 		main {
