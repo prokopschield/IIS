@@ -343,7 +343,7 @@ export async function main() {
 					where: { camp_id, attendee_id: user_id }
 				})
 
-				return { success: true, info }
+				return { success: true, ...info }
 			}
 		}
 	);
