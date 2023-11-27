@@ -18,7 +18,7 @@
 	];
 
 	function homePageRedirect() {
-		state("page").set("$1");
+		state("page").set("/");
 	}
 
 	const newItem = {
@@ -78,7 +78,9 @@
 		ModalMessage = "Byl/y úspěšně přidáni učastník/ci.";
 
 		// Iterate through attendees
+		let OriginalAttendeesOfArray = attendeesOfArray;
 		for (let index = 0; index < auxAttendeesArray.length; index++) {
+			let fullNameAttenees = auxAttendeesArray[index].value;
 			if (auxAttendeesArray[index].value !== "") {
 				if (auxAttendeesArray[index].value.split(" ").length != 2) {
 					alert(
@@ -86,8 +88,9 @@
 					);
 					ModalMessage = "Účastník/ci nebyl/y úspěšně přidáni.";
 					return;
+					attendeesOfArray = OriginalAttendeesOfArray;
 				}
-
+				attendeesOfArray = [...attendeesOfArray, fullNameAttenees];
 				// Add new attendee
 				emptyAttendeesList = false;
 				let firstName = auxAttendeesArray[index].value.split(" ")[0];

@@ -1,10 +1,10 @@
 <script>
 	import Modal from "./shared/Modal.svelte";
-	import { createEventDispatcher } from "svelte";
 	import Button from "./shared/Button.svelte";
+	import Alert from "./shared/Alert.svelte";
+	import { createEventDispatcher } from "svelte";
 
 	export let modalId = "login_modal"; // Default value
-	export let whoLogs = "";	// Parameter of who uses the login modal
 	const dispatch = createEventDispatcher();
 
 	function handleSubmit() {
@@ -15,25 +15,22 @@
 			alert("Empty login name");
 			return;
 		}
-		if (loginName.split(" ").length != 2){
-			alert("Login name must consist of name and surname");
-			return;
-		}
 		if (loginPassword === ""){
 			alert("No password entered")
 			return;
 		}
 
 
-		// Send data to above in event varriable, e
+		// Send data to above in event variable, e
 		const loginData = {
 				name: loginName,
 				password: loginPassword,
 			}
 
-		console.log("log from login modal");
-		console.log(loginData);
-		dispatch("login", loginData);
+		// console.log("Log from LoginModal")
+		// console.log(loginData);
+
+		dispatch('login', loginData);
 	}
 
 
@@ -41,7 +38,8 @@
 
 
 <Modal modalId={modalId}>
-	<p slot="title"> Log in</p>
+	<p slot="title">Log in</p>
+
 
 	<form slot="content" id="loginForm" class="space-y-3" on:submit|preventDefault={handleSubmit}>
 		<label for="name">Log in name</label><br>

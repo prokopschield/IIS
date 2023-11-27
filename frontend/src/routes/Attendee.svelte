@@ -1,173 +1,175 @@
-<script>
-	import Navbar from "../components/shared/Navbar.svelte";
-	import Carrousel from "../components/shared/Carrousel.svelte";
-	import PersonHero from "../components/shared/PersonHero.svelte";
-	import Button from "../components/shared/Button.svelte";
-	import CarrouselCard from "../components/CarrouselCard.svelte";
-	import Menu from "../components/shared/Menu.svelte";
+<script lang="ts">
+    import Navbar from "../components/shared/Navbar.svelte";
+    import Carrousel from "../components/shared/Carrousel.svelte";
+    import PersonHero from "../components/shared/PersonHero.svelte";
+    import Button from "../components/shared/Button.svelte";
+    import CarrouselCard from "../components/CarrouselCard.svelte";
+    import Menu from "../components/shared/Menu.svelte";
+    import Card from "../components/shared/Card.svelte";
+    import Modal from "../components/shared/Modal.svelte";
+    import Alert from "../components/shared/Alert.svelte";
+    import {state} from "../state";
+    import {attendee_load_activities} from "../backend";
 
-	let people = Array("Mirek", "MArek", "Peter", "Damo");
-	let showUndo = false;
-	let newActivity = {
-		name: "Snorchling",
-		description:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Et odio pellentesque diam volutpat commodo sed. Et netus et malesuada fames ac turpis. Ut ornare lectus sit amet",
-		date: "12.2.2021",
-		time: "23:00",
-	};
+    let page_alert = {
+        text: "",
+        visible: false,
+        style: "",
+    }
+    let modalName="card_modal";
+    let modalContent = {
+        title: "",
+        date: "",
+        time: "",
+        description: "",
+        points: 0,
+    }
+    let upcomingActivities = [];
+    let scoredActivities = []
+    async function load_attendee() {
+        let result = await attendee_load_activities();
 
-	let upcomingActivities = new Array(newActivity);
-	newActivity = {
-		name: "Kickboxing",
-		description:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Et odio pellentesque diam volutpat commodo sed. Et netus et malesuada fames ac turpis. Ut ornare lectus sit amet",
-		date: "13.5.2022",
-		time: "11:00",
-	};
-	upcomingActivities.push(newActivity);
+        if ('all_upcoming_activities' in result)
+        {
+            upcomingActivities = result.all_upcoming_activities;
+        }
+        if ('all_scored_activities' in result){
+            scoredActivities = result.all_evaluated_activities;
+        }
+        if ('error' in result){
+            page_alert = {
+                text: result.error,
+                visible: true,
+                style: "error",
+            }
+        }
+    }
 
-	let scoredActivity = {
-		name: "Cycling",
-		description:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Et odio pellentesque diam volutpat commodo sed. Et netus et malesuada fames ac turpis. Ut ornare lectus sit amet",
-		date: "22.1.2022",
-		time: "21:00",
-		earnedPoints: 10,
-	};
-	let scoredActivities = new Array(scoredActivity);
+    load_attendee();
 
-	scoredActivity = {
-		name: "Running",
-		description:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Et odio pellentesque diam volutpat commodo sed. Et netus et malesuada fames ac turpis. Ut ornare lectus sit amet",
-		date: "22.9.2019",
-		time: "8:00",
-		earnedPoints: 20,
-	};
-	upcomingActivities.push(scoredActivity);
+    function homePageRedirect() {
+        state("page").set("/");
+    }
 
-	let earnedPoints = 0;
-	$: for (let i = 0; i < scoredActivities.length; i++) {
-		earnedPoints += scoredActivities[i].earnedPoints;
-	}
 
-	function homePageRedirect() {
-		state("page").set("$1");
-	}
+    function detailsHandlerUpcomings(index){
+        let clickedActivity=upcomingActivities[index];
+        modalContent.time = clickedActivity.name;
+        modalContent.date = clickedActivity.date;
+        modalContent.description = clickedActivity.description;
+        modalContent.title = clickedActivity.title;
+        modalName.show();
+    }
+
+    function detailsHandlerScored(index){
+        let clickedActivity=upcomingActivities[index];
+        modalContent.time = clickedActivity.name;
+        modalContent.date = clickedActivity.date;
+        modalContent.description = clickedActivity.description;
+        modalContent.title = clickedActivity.title;
+        modalName.show();
+    }
 </script>
 
 <Navbar>
-	<div slot="homePageContainer" class="flex-1">
-		<Button buttonClass="btn btn-ghost text-xl" on:click={homePageRedirect}
-			>Domovská stránka</Button
-		>
-	</div>
-	<div slot="centerContainer" class="flex-none"></div>
+    <div slot="homePageContainer" class="flex-1">
+        <Button buttonClass="btn btn-ghost text-xl" on:click={homePageRedirect}
+        >Domovská stránka
+        </Button
+        >
+    </div>
+    <div slot="centerContainer" class="flex-none"></div>
 </Navbar>
 
+{#if page_alert.visible}
+    <Alert alertStyle={page_alert.style}>{page_alert.text}</Alert>
+{/if}
+
+<Modal modalId={modalName} title={modalContent.title}>
+    <div slot="content">
+        <p>{modalContent.date}</p>
+        <p>{modalContent.time}</p>
+        <p>{modalContent.description}</p>
+    </div>
+
+</Modal>
 <PersonHero>
-	<div class="flex flex-col h-screen justify-between">
-		<!-- Menu -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
 
-		<!-- Menu content goes here -->
+        <!-- Side menu-->
+        <div class="col-span-3 md:col-span-3">
+            <Menu>
 
-		<!-- Carrousel -->
-	</div>
+            </Menu>
+        </div>
 
-	<!-- Carrousel for upcoming activities-->
-	<div class="flex-none p-4">
-		<Menu>
-			{#if showUndo}
-				<li><a>Back to plan of activities </a></li>
-			{/if}
-			<li>
-				<details open>
-					<summary>Direct messages</summary>
-					<ul>
-						{#each people as person}
-							<!-- TODO Direct messaging-->
-							<li><a>{person}</a></li>
-						{/each}
-					</ul>
-				</details>
-			</li>
-		</Menu>
-	</div>
+        <!-- upcoming activities -->
+        <div class="col-span-1 md:col-span-1 flex ">
+            <p>Upcoming activities</p>
+            <span>
+                {#each upcomingActivities as upcomingActivity, index}
+                    <Card tittle={upcomingActivity.name} >
+                        <Button slot="undoButton" buttonClass="btn" on:click={() => detailsHandlerUpcomings(index)}>Details</Button>
+                        <div slot="content">
+                            <p>{upcomingActivity.date}</p>
+                            <p>{upcomingActivity.time}</p>
+                        </div>
+                    </Card>
+                {/each}
+            </span>
+        </div>
 
-	<!-- Upcoming activities -->
-	<div class="flex-auto p-4">
-		<Carrousel>
-			{#each upcomingActivities as upcomingActivity, index}
-				{#if index === 0}
-					<CarrouselCard
-						activityTitle={upcomingActivity.name}
-						cardId={index}
-						previousCardId={upcomingActivities.length - 1}
-						nextCardId={index + 1}
-					>
-						<p class="mb-2">{upcomingActivity.description}</p>
-						<p class="mb-2">{upcomingActivity.date}</p>
-						<p class="mb-2">{upcomingActivity.time}</p>
-					</CarrouselCard>
-				{:else if index === upcomingActivities.length - 1}
-					<CarrouselCard
-						cardId={index}
-						previousCardId={index - 1}
-						nextCardId={0}
-					>
-						<p class="mb-2">{upcomingActivity.description}</p>
-						<p class="mb-2">{upcomingActivity.date}</p>
-						<p class="mb-2">{upcomingActivity.time}</p>
-					</CarrouselCard>
-				{:else}
-					<CarrouselCard
-						cardId={index}
-						previousCardId={index - 1}
-						nextCardId={index + 1}
-					>
-						<p class="mb-2">{upcomingActivity.description}</p>
-						<p class="mb-2">{upcomingActivity.date}</p>
-						<p class="mb-2">{upcomingActivity.time}</p>
-					</CarrouselCard>
-				{/if}
-			{/each}
-		</Carrousel>
-	</div>
+        <!-- Direct messaging menu -->
+        <div class="col-span-3 md:col-span-3">
+            <Menu>
 
-	<!-- Last added activities -->
-	<div class="flex-auto p-4">
-		<Carrousel>
-			{#each scoredActivities as scoredActivity, index}
-				{#if index === 0}
-					<CarrouselCard
-						cardId={index}
-						previousCardId={upcomingActivities.length - 1}
-						nextCardId={index + 1}
-					>
-						{scoredActivity.description}
-					</CarrouselCard>
-				{:else if index === upcomingActivities.length - 1}
-					<CarrouselCard
-						cardId={index}
-						previousCardId={index - 1}
-						nextCardId={0}
-					></CarrouselCard>
-				{:else}
-					<CarrouselCard
-						cardId={index}
-						previousCardId={index - 1}
-						nextCardId={index + 1}
-					>
-						{scoredActivity.description}
-					</CarrouselCard>
-				{/if}
-			{/each}
-		</Carrousel>
-	</div>
+            </Menu>
+        </div>
 
-	<div class="col-span-1">
-		<!-- Ammount of all points -->
-		<h2>Amount of all earned points</h2>
-		<p>{earnedPoints}</p>
-	</div>
+        <!-- Scored activities -->
+        <div class="col-span-1 md:col-span-1">
+            <p>Scored activities</p>
+            <span>
+                {#each scoredActivities as scoredActivity, index}
+                    <Card tittle={scoredActivity.name} >
+                        <Button slot="undoButton" buttonClass="btn" on:click={() => detailsHandlerScored(index)}>Details</Button>
+                        <div slot="content">
+                            <p>{scoredActivity.date}</p>
+                            <p>{scoredActivity.time}</p>
+                        </div>
+                    </Card>
+                {/each}
+            </span>
+        </div>
+    </div>
+
+
 </PersonHero>
+
+<!--<div class="columns-2xs">-->
+<!--	<div class="w-full">-->
+<!--		<Menu></Menu>-->
+<!--	</div>-->
+
+<!--	<div class="grid-rows-2">-->
+<!--		&lt;!&ndash; Cards with upcoming activities&ndash;&gt;-->
+<!--		<div>-->
+<!--			{#each upcomingActivities as upcomingActivity, index}-->
+<!--				<Card tittle={upcomingActivity.name} id="upcoming_activity_card_{String(index)}">-->
+<!--					<Button slot="undoButton" buttonClass="btn" on:click={detailsHandler}>Details</Button>-->
+<!--					<div slot="content">-->
+<!--						<p>{upcomingActivity.date}</p>-->
+<!--						<p>{upcomingActivity.time}</p>-->
+<!--					</div>-->
+<!--				</Card>-->
+<!--			{/each}-->
+<!--		</div>-->
+
+<!--		&lt;!&ndash; Cards with scored activities&ndash;&gt;-->
+<!--		<div>-->
+<!--			{#each scoredActivities as scoredActivity}-->
+<!--				<Card tittle={scoredActivity.name}>{scoredActivity.description}</Card>-->
+<!--			{/each}-->
+<!--		</div>-->
+<!--	</div>-->
+<!--</div>-->
