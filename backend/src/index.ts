@@ -1,3 +1,4 @@
+import { activity } from "@prisma/client";
 import { Server } from "@prokopschield/simple-socket-server";
 import assert from "assert";
 import { hash, verify } from "doge-passwd";
@@ -276,6 +277,45 @@ export async function main() {
 				});
 
 				return { camps, success: true };
+			},
+
+			async attendee_load_activities(_socket, state) {
+				const user_id = BigInt(state.get("user_id") || NaN);
+
+				const data = await database.user.findFirstOrThrow({
+					include: {
+						attendee: {
+							include: {
+								attended: true,
+								camp: { include: { activity: true } },
+							},
+						},
+					},
+					where: { id: user_id },
+				})!;
+
+				const all_upcoming_activities = new Array<activity>();
+				const all_evaluated_activities = new Array<activity>();
+
+				data.attendee.forEach(({ attended, camp }) => {
+					for (const activity of camp.activity) {
+						if (
+							attended.some(
+								(attended) =>
+									attended.activity_id === activity.id
+							)
+						) {
+							all_evaluated_activities.push(activity);
+						} else {
+							all_upcoming_activities.push(activity);
+						}
+					}
+				});
+
+				return success({
+					all_upcoming_activities,
+					all_evaluated_activities,
+				});
 			},
 		}
 	);
