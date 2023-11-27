@@ -2,6 +2,7 @@
 	import { authenticated, loading, page } from "./lib/state";
 	import Camp from "./pages/Attendee/Camp.svelte";
 	import MyCamps from "./pages/Attendee/MyCamps.svelte";
+	import LeaderActivity from "./pages/Leader/Activity.svelte";
 	import LeaderCamp from "./pages/Leader/Camp.svelte";
 	import LeaderMyCamps from "./pages/Leader/MyCamps.svelte";
 	import LeaderNewActivity from "./pages/Leader/NewActivity.svelte";
@@ -32,6 +33,8 @@
 		<Camp />
 	{:else if $page === "/attendee/my_camps"}
 		<MyCamps />
+	{:else if $page === "/leader/activity"}
+		<LeaderActivity />
 	{:else if $page === "/leader/camp"}
 		<LeaderCamp />
 	{:else if $page === "/leader/my_camps"}
