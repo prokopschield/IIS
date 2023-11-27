@@ -5,11 +5,6 @@
 	import { createEventDispatcher } from "svelte";
 
 	export let modalId = "login_modal"; // Default value
-	export let modal_alert = {
-		style: "info",
-		visible: false,
-		text: ""
-	}
 	const dispatch = createEventDispatcher();
 
 	function handleSubmit() {
@@ -49,9 +44,6 @@
 <Modal modalId={modalId}>
 	<p slot="title">Log in</p>
 
-	{#if modal_alert.visible}
-		<Alert slot="feedback" alertStyle={modal_alert.style}>{modal_alert.text}</Alert>
-	{/if}
 
 	<form slot="content" id="loginForm" class="space-y-3" on:submit|preventDefault={handleSubmit}>
 		<label for="name">Log in name</label><br>

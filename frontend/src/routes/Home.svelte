@@ -1,19 +1,18 @@
 <script>
     import Navbar from "../components/shared/Navbar.svelte";
     import Button from "../components/shared/Button.svelte";
-    import Hero from "../components/shared/CenterHero.svelte";
+    import Hero from "../components/shared/Hero.svelte";
     import LoginModal from "../components/LoginModal.svelte";
     import Alert from "../components/shared/Alert.svelte";
     import {state} from "../state";
     import {authenticate} from "../backend";
 
     let modalName = "login_modal";
-    let whoClicked = "";
 
 
     let page_alert = {
         style: "info",
-        visible: true,
+        visible: false,
         text: "",
     }
 
@@ -22,8 +21,8 @@
     }
 
     function handleClick(whoUsed) {
+        page_alert.visible = false;
         // Ignore errors with passing type since we pass to us known types
-        whoClicked = whoUsed;
         document.getElementById(modalName).show();
     }
 
@@ -35,21 +34,15 @@
         let password = e.detail.password;
         let result;
 
-        // try {
-        //     result = await authenticate(name, password);
-        // } catch (error) {
-        //     page_alert.style = "error";
-        //     page_alert.text = String(error);
-        //     page_alert.visible = true;
-        // }
-
-        page_alert.style = "error";
-        page_alert.text = String("You mama fat");
-        page_alert.visible = true;
-
-
+        try {
+            result = await authenticate(name, password);
+        } catch (error) {
+            document.getElementById(modalName).close();
+            page_alert.style = "error";
+            page_alert.text = String(error);
+            page_alert.visible = true;
+        }
     };
-
 
 
 </script>
@@ -95,16 +88,20 @@
 </Navbar>
 
 <Hero>
-    <LoginModal modal_alert={page_alert} modalId={modalName} on:login={loginHandler}/>
+    {#if page_alert.visible}
+        <div class="absolute top-40 left-1/2 transform -translate-x-1/2">
+            <Alert alertStyle={page_alert.style}>{page_alert.text}</Alert>
+        </div>
+    {/if}
+    <LoginModal modalId={modalName} on:login={loginHandler}/>
     <div class="max-w-md">
         <h1 class="text-5xl font-bold">Vítejte!</h1>
         <p class="py-6">
             Pro lepší zážitek nechte zmodernizovat tábor naším informačním
             systémem bodovaných táborových aktivit.
         </p>
-        <Button buttonClass="btn btn-primary" on:click={redirectCampRegister}
-        >Začíname
-        </Button
-        >
+        <Button buttonClass="btn btn-primary" on:click={redirectCampRegister}>
+            Začíname
+        </Button>
     </div>
 </Hero>

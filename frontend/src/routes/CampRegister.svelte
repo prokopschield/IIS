@@ -1,6 +1,6 @@
 <script lang="ts">
     import Card from "../components/shared/Card.svelte";
-    import Hero from "../components/shared/CenterHero.svelte";
+    import Hero from "../components/shared/Hero.svelte";
     import Button from "../components/shared/Button.svelte";
     import Navbar from "../components/shared/Navbar.svelte";
     import Alert from "../components/shared/Alert.svelte";
@@ -12,7 +12,7 @@
     let page_alert = {
         style: "info",
         text: "",
-        visible: true
+        visible: false
     }
 
     // This function is here only so we will wait before closing the alert
@@ -42,6 +42,8 @@
 
 
     async function submitForm() {
+
+        page_alert.visible=false;
 
         // Get all attendees
         let attendees = new Array<string>();
@@ -117,13 +119,12 @@
         };
 
 
-        // TODO Vito implement
         let result = await register_organizer(newCamp);
 
         // We ask if operation was succesfull
         if ('success' in result && result.success) {
             console.log("149 Inside RegistrationSuccess");
-            state("page").set("$1");
+            state("page").set("/organizer");
         } else if ('error' in result) {
             page_alert.text = result.error;
             page_alert.visible = true;
@@ -140,6 +141,8 @@
     }
 
     const organizerLoginHandler = async (e) => {
+
+        page_alert.visible=false;
 
         let loginInfo = e.detail;
         let result;
@@ -175,6 +178,11 @@
 
 <Hero>
 
+    {#if page_alert.visible}
+        <div class="absolute top-40 left-1/2 transform -translate-x-1/2">
+            <Alert alertStyle={page_alert.style}>{page_alert.text}</Alert>
+        </div>
+    {/if}
 
     <Card width="120" tittle="Registrace tábora">
 

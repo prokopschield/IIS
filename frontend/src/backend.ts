@@ -106,8 +106,7 @@ export const authenticate: (
 };
 
 // Nacitanie ucastnika
-// Niesom si isty ako ho identifikovat ale asi hadam ze pomocou Session ID ?
-export const load_attendee: (/*Nie som si isty co sem*/) => Promise<
+export const load_attendee: () => Promise<
 	| { error: string }
 	| {
 			success: true;
