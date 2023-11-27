@@ -24,10 +24,12 @@
 		<!-- svelte-ignore a11y-no-static-element-interactions -->
 		<div class="campinfo" on:click={() => openCamp(camp.id)}>
 			<h2>{camp.name}</h2>
-			Vedoucí:
-			{#each camp.leader as leader}
-				<span>{leader.user.legal_name}</span>
-			{/each}
+			<h3>Vedoucí:</h3>
+			<p>
+				{#each camp.leader as leader}
+					<span>{leader.user.legal_name}</span> <br />
+				{/each}
+			</p>
 		</div>
 	{/each}
 </div>
