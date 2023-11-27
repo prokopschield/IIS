@@ -170,9 +170,6 @@
         <Button buttonClass="btn btn-ghost text-xl" on:click={homePageRedirect}>Domovská stránka</Button>
     </div>
     <div slot="centerContainer" class="flex-none">
-        {#if page_alert.visible}
-            <Alert alertStyle={page_alert.style}>{page_alert.text}</Alert>
-        {/if}
     </div>
 </Navbar>
 

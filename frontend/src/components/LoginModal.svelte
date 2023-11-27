@@ -15,10 +15,6 @@
 			alert("Empty login name");
 			return;
 		}
-		if (loginName.split(" ").length != 2){
-			alert("Login name must consist of name and surname");
-			return;
-		}
 		if (loginPassword === ""){
 			alert("No password entered")
 			return;

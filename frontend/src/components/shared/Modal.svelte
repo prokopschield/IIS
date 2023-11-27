@@ -23,10 +23,6 @@
             <slot name="content">
 
             </slot>
-
-            <slot name="feedback">
-
-            </slot>
         </p>
 
         <div class="modal-action">

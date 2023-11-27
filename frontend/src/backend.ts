@@ -126,7 +126,7 @@ export const load_attendee: () => Promise<
  * 		zoznam vsetkych bodovanych aktivit : -||- plus body aktivity
  *
  */
-export const attendee_load_activities: (/* Stale pre toho isteho ucastnnika*/) => Promise<
+export const attendee_load_activities: () => Promise<
 	| { error: string }
 	| {
 			all_upcoming_activities: [];

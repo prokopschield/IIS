@@ -41,7 +41,12 @@
             page_alert.style = "error";
             page_alert.text = String(error);
             page_alert.visible = true;
+            console.log("Unsuccesfull ");
+            return;
         }
+
+        document.getElementById(modalName).close();
+        state("page").set("/attendee");
     };
 
 
