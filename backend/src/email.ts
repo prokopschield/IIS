@@ -313,7 +313,7 @@ export async function fast_registration(
 Byl Vám vygenerován přístup do systému IS CAMP.
 Vaše uživatelské jméno je ${username}.
 
-Pro přihlášení do informačního systému IS CAMP použijte tento [odkaz](${redirect_url}.)`),
+Pro přihlášení do informačního systému IS CAMP použijte tento [odkaz](${redirect_url}).`),
 		});
 
 		return created;
