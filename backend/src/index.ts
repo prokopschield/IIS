@@ -570,46 +570,45 @@ export async function main() {
 
 				assert(typeof camp_id === "number");
 
-				const info = await database.leader.findFirstOrThrow({
+				const camp = await database.camp.findFirstOrThrow({
 					include: {
-						camp: {
+						user: true,
+						leader: {
 							include: {
 								user: true,
-								leader: {
+							},
+						},
+						attendee: {
+							include: { user: true, attended: true },
+						},
+						activity: {
+							include: {
+								attended: {
 									include: {
-										user: true,
-									},
-								},
-								attendee: {
-									include: { user: true, attended: true },
-								},
-								activity: {
-									include: {
-										attended: {
-											include: {
-												attendee: {
-													include: {
-														user: true,
-													},
-												},
-											},
-										},
-										leader: {
+										attendee: {
 											include: {
 												user: true,
 											},
 										},
 									},
 								},
+								leader: {
+									include: {
+										user: true,
+									},
+								},
 							},
 						},
 					},
-					where: { camp_id },
+
+					where: {
+						id: camp_id,
+					},
 				});
 
-				assert(info?.camp.organizer_id === user_id);
+				assert(camp.organizer_id === user_id);
 
-				return { success: true, ...info };
+				return { success: true, camp };
 			},
 		}
 	);
