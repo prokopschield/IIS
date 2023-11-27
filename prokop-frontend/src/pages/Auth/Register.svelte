@@ -1,7 +1,7 @@
 <!-- LoginPage.svelte -->
 
 <script>
-	import { backend } from "../lib/backend";
+	import { backend } from "../../lib/backend";
 
 	let legal_name = "";
 	let displayname = "";

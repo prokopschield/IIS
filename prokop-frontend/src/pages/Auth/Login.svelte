@@ -1,8 +1,8 @@
 <!-- LoginPage.svelte -->
 
 <script>
-	import { backend } from "../lib/backend";
-	import { authenticated, page, user } from "../lib/state";
+	import { backend } from "../../lib/backend";
+	import { authenticated, page, user } from "../../lib/state";
 
 	let email = "";
 	let password = "";
