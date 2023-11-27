@@ -1,7 +1,7 @@
 import { encode, decode } from "doge-don";
 import { cacheFn, defineGlobal } from "ps-std";
 import { writable } from "svelte/store";
-import { backend } from "./backend";
+import { backend, socket } from "./backend";
 
 export const state = cacheFn(<T>(key: string) => {
 	let value: T | undefined = decode(localStorage.getItem(key) || "");
@@ -50,6 +50,8 @@ page.set(location.pathname);
 page.subscribe((new_page) => history.pushState(undefined, "", new_page));
 
 async function page_load() {
+	loading.set(true)
+	
 	for (const [key, value] of new URL(location.href).searchParams.entries()) {
 		state(key).set(value);
 	}
@@ -72,5 +74,7 @@ async function page_load() {
 		loading.set(false);
 	}
 }
+
+socket.on("connect", page_load)
 
 page_load();
