@@ -2,27 +2,52 @@
 
 <script>
 	import { backend } from "../lib/backend";
-	import { authenticated, page, user } from "../lib/state";
 
+	let legal_name = "";
+	let displayname = "";
 	let email = "";
 	let password = "";
 
 	async function handleLogin() {
 		try {
-			const user_data = await backend.login(email, password);
+			const { status } = await backend.register({
+				legal_name,
+				displayname,
+				email,
+				password,
+				redirect: new URL("/", location.href).href,
+			});
 
-			user.set(user_data);
-			authenticated.set(true);
-			page.set("/");
-		} catch {
-			alert("Login failed.");
+			if (status === "EMAIL_SENT") {
+				alert("Please check your inbox!");
+			}
+		} catch (error) {
+			console.error(error);
+
+			if (error === "DISPLAYNAME_TOO_SHORT") {
+				return alert(
+					"Please select a nickname that is >= 8 letters long.",
+				);
+			}
+
+			if (error === "DISPLAYNAME_TOO_LONG") {
+				return alert("Please select a shorter nickname.");
+			}
+
+			alert("Please check the information you filled in.");
 		}
 	}
 </script>
 
-<div>
+<main>
 	<form on:submit|preventDefault={handleLogin}>
-		<h1>Login</h1>
+		<h1>Register</h1>
+
+		<label for="legal_name">Legal name:</label>
+		<input id="legal_name" bind:value={legal_name} required />
+
+		<label for="displayname">Nickname:</label>
+		<input id="displayname" bind:value={displayname} required />
 
 		<label for="email">Email:</label>
 		<input type="email" id="email" bind:value={email} required />
@@ -30,15 +55,14 @@
 		<label for="password">Password:</label>
 		<input type="password" id="password" bind:value={password} required />
 
-		<button type="submit">Login</button>
+		<button type="submit">Sign Up</button>
 		<hr />
-		<a href="/register">Sign Up</a>
-		<a href="/recovery">Forgot Password</a>
+		<a href="/login">Log In</a>
 	</form>
-</div>
+</main>
 
 <style>
-	div {
+	main {
 		display: flex;
 		align-items: center;
 		justify-content: center;
