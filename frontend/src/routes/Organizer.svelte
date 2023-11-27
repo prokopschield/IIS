@@ -1,7 +1,8 @@
-<script>
+<script lang="ts">
 	import Button from "../components/shared/Button.svelte";
 	import Navbar from "../components/shared/Navbar.svelte";
 	import HeroTwo from "../components/shared/HeroTwo.svelte";
+	import {organizer_edit_camp} from "../backend.js";
 
 	// Camp info
 	let campName = "Současný název tábora";
@@ -20,9 +21,37 @@
 		state("page").set("$1");
 	}
 
-	function changeName() {
-		ModalMessage = "Přídán nový název tábora!";
-		my_modal_1.showModal();
+	const newItem = {
+            new_supervisors: [],
+            new_attendees: [],
+            new_camp_name: ""
+        };
+
+	async function changeName() {
+		let organizer = document.getElementsByName("camp_name").value;
+        console.log(organizer);
+
+		const newItem = {
+            new_supervisors: [],
+            new_attendees: [],
+            new_camp_name: organizer
+        };
+
+        let myresult = await organizer_edit_camp(newItem);
+
+        if ('success' in myresult && myresult.success) {
+            console.log("Change Name Success");
+			ModalMessage = "Přídán nový název tábora!";
+			my_modal_1.showModal();
+        } else if ('error' in myresult) {
+            ModalMessage = `Chyba: ${myresult.error}`;
+            console.log("Registration unsuccesfull");
+			my_modal_1.showModal();
+        } else {
+            console.log("Unknow Error");
+			ModalMessage = "Název nebyl změnen. Objevil se neznámý problém.";
+			my_modal_1.showModal();
+        }
 	}
 
 	let attendeesCount = 0;
