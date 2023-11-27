@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { loading, page } from "./lib/state";
-	import ForgotPassword from "./pages/ForgotPassword.svelte";
-	import Login from "./pages/Login.svelte";
-	import Register from "./pages/Register.svelte";
+	import ForgotPassword from "./pages/Auth/ForgotPassword.svelte";
+	import Login from "./pages/Auth/Login.svelte";
+	import Register from "./pages/Auth/Register.svelte";
 </script>
 
 <main>
