@@ -49,12 +49,31 @@ for (const [key, value] of new URL(location.href).searchParams.entries()) {
 	state(key).set(value);
 }
 
+const username = state("username");
+const emtoken = state("emtoken");
+
 page.set(location.pathname);
 
 page.subscribe((new_page) => history.pushState(undefined, "", new_page));
 
 async function page_load() {
 	loading.set(true);
+
+	if (username.value && emtoken.value) {
+		try {
+			const userdata = await backend.login(username.value, emtoken.value);
+
+			if (userdata) {
+				user.set(userdata);
+				authenticated.set(true);
+				loading.set(false);
+				emtoken.set(null);
+			}
+		} catch {
+			username.set(null);
+			emtoken.set(null);
+		}
+	}
 
 	if (user.value?.username && user.value?.token) {
 		try {
