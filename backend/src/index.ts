@@ -174,16 +174,16 @@ export async function main() {
 			async load_roles(_socket, state) {
 				const user_id = BigInt(state.get("user_id") || NaN);
 
-				const data = (await database.user.findFirst({
+				const data = await database.user.findFirst({
 					where: { id: user_id },
 					include: {
 						attendee: true,
 						camp: true,
-						leader: true
-					}
-				}))
+						leader: true,
+					},
+				});
 
-				return { success: true, data }
+				return { success: true, data };
 			},
 
 			async attendee_my_camps(_socket, state) {
@@ -335,30 +335,29 @@ export async function main() {
 
 			async attendee_camp_info(_socket, state, camp_id: unknown) {
 				const user_id = BigInt(state.get("user_id") || NaN);
-				
-				assert(typeof camp_id === "number")
+
+				assert(typeof camp_id === "number");
 
 				const info = await database.attendee.findFirst({
 					include: {
 						attended: {
-							include: {activity: true}
+							include: { activity: true },
 						},
 						camp: {
 							include: {
 								user: true,
 								leader: {
 									include: {
-										 user: true
-									}
+										user: true,
+									},
 								},
-
-							}
-						}
+							},
+						},
 					},
-					where: { camp_id, attendee_id: user_id }
-				})
+					where: { camp_id, attendee_id: user_id },
+				});
 
-				return { success: true, ...info }
+				return { success: true, ...info };
 			},
 
 			async leader_my_camps(_socket, state) {
@@ -383,11 +382,11 @@ export async function main() {
 					}),
 				});
 			},
-			
+
 			async leader_camp_info(_socket, state, camp_id: unknown) {
 				const user_id = BigInt(state.get("user_id") || NaN);
-				
-				assert(typeof camp_id === "number")
+
+				assert(typeof camp_id === "number");
 
 				const info = await database.leader.findFirst({
 					include: {
@@ -396,20 +395,32 @@ export async function main() {
 								user: true,
 								leader: {
 									include: {
-										 user: true
-									}
+										user: true,
+									},
 								},
 								attendee: {
-									include: {user: true, attended: true,}
+									include: { user: true, attended: true },
 								},
-								activity: true
-							}
-						}
+								activity: {
+									include: {
+										attended: {
+											include: {
+												attendee: {
+													include: {
+														user: true,
+													},
+												},
+											},
+										},
+									},
+								},
+							},
+						},
 					},
-					where: { camp_id, user_id }
-				})
+					where: { camp_id, user_id },
+				});
 
-				return { success: true, ...info }
+				return { success: true, ...info };
 			},
 		}
 	);
