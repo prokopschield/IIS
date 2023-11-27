@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { authenticated, loading, page, state } from "./lib/state";
-	import Camp from "./pages/Attendee/Camp.svelte";
-	import MyCamps from "./pages/Attendee/MyCamps.svelte";
+	import AttendeeCamp from "./pages/Attendee/Camp.svelte";
+	import AttendeeMyCamps from "./pages/Attendee/MyCamps.svelte";
 	import LeaderActivity from "./pages/Leader/Activity.svelte";
 	import LeaderCamp from "./pages/Leader/Camp.svelte";
 	import LeaderMyCamps from "./pages/Leader/MyCamps.svelte";
 	import LeaderNewActivity from "./pages/Leader/NewActivity.svelte";
-	import ForgotPassword from "./pages/Auth/ForgotPassword.svelte";
-	import Login from "./pages/Auth/Login.svelte";
-	import Register from "./pages/Auth/Register.svelte";
+	import AuthForgotPassword from "./pages/Auth/ForgotPassword.svelte";
+	import AuthLogin from "./pages/Auth/Login.svelte";
+	import AuthRegister from "./pages/Auth/Register.svelte";
 	import Home from "./pages/Home.svelte";
 
 	function logout() {
@@ -26,19 +26,19 @@
 	{#if $loading}
 		Moment, prosím, načítám data...
 	{:else if $page === "/login"}
-		<Login />
+		<AuthLogin />
 	{:else if $page === "/register"}
-		<Register />
+		<AuthRegister />
 	{:else if $page === "/recover"}
-		<ForgotPassword />
+		<AuthForgotPassword />
 	{:else if !$authenticated}
-		<Login />
+		<AuthLogin />
 	{:else if $page === "/"}
 		<Home />
 	{:else if $page === "/attendee/camp"}
-		<Camp />
+		<AttendeeCamp />
 	{:else if $page === "/attendee/my_camps"}
-		<MyCamps />
+		<AttendeeMyCamps />
 	{:else if $page === "/leader/activity"}
 		<LeaderActivity />
 	{:else if $page === "/leader/camp"}
