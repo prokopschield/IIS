@@ -222,6 +222,61 @@ export async function main() {
 					}),
 				});
 			},
+
+			async load_attendee(_socket, state) {
+				const user_id = BigInt(state.get("user_id") || NaN);
+
+				const attended_camps = await database.attendee.findMany({
+					include: {
+						camp: {
+							include: {
+								attendee: {
+									include: {
+										user: true,
+									},
+								},
+								activity: {
+									include: {
+										attended: {
+											where: {
+												attendee: {
+													attendee_id: user_id,
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+						attended: {
+							include: {
+								activity: true,
+							},
+						},
+					},
+					where: { attendee_id: user_id },
+				});
+
+				const camps = attended_camps.map(({ attended, camp }) => {
+					return {
+						name_of_camp: camp.name,
+						next_activities: camp.activity.filter(
+							(activity) => !activity.attended.length
+						),
+						amount_of_points: attended
+							.map(
+								({ activity: { points }, score }) =>
+									points * score
+							)
+							.reduce((next, previous) => next + previous),
+						all_attendees: camp.attendee.map(
+							(attendee) => attendee.user
+						),
+					};
+				});
+
+				return { camps, success: true };
+			},
 		}
 	);
 
