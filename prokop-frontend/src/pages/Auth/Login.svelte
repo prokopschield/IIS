@@ -4,12 +4,12 @@
 	import { backend } from "../../lib/backend";
 	import { authenticated, page, user } from "../../lib/state";
 
-	let email = "";
+	let username = "";
 	let password = "";
 
 	async function handleLogin() {
 		try {
-			const user_data = await backend.login(email, password);
+			const user_data = await backend.login(username, password);
 
 			user.set(user_data);
 			authenticated.set(true);
@@ -24,8 +24,8 @@
 	<form on:submit|preventDefault={handleLogin}>
 		<h1>Login</h1>
 
-		<label for="email">Email:</label>
-		<input type="email" id="email" bind:value={email} required />
+		<label for="username">Username:</label>
+		<input id="username" bind:value={username} required />
 
 		<label for="password">Password:</label>
 		<input type="password" id="password" bind:value={password} required />
