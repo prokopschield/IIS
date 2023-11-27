@@ -31,7 +31,7 @@
 				</a>
 			</p>
 		{/each}
-		<button on:click={() => page.set("/leader/nova_aktivita")}>
+		<button on:click={() => page.set("/leader/new_activity")}>
 			Vytvořit aktivitu
 		</button>
 	{:else}

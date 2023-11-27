@@ -4,6 +4,7 @@
 	import MyCamps from "./pages/Attendee/MyCamps.svelte";
 	import LeaderCamp from "./pages/Leader/Camp.svelte";
 	import LeaderMyCamps from "./pages/Leader/MyCamps.svelte";
+	import LeaderNewActivity from "./pages/Leader/NewActivity.svelte";
 	import ForgotPassword from "./pages/Auth/ForgotPassword.svelte";
 	import Login from "./pages/Auth/Login.svelte";
 	import Register from "./pages/Auth/Register.svelte";
@@ -35,6 +36,8 @@
 		<LeaderCamp />
 	{:else if $page === "/leader/my_camps"}
 		<LeaderMyCamps />
+	{:else if $page === "/leader/new_activity"}
+		<LeaderNewActivity />
 	{:else}
 		{(page.set("/"), "Stránka nenalezena.")}
 	{/if}
