@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { authenticated, loading, page } from "./lib/state";
+	import { authenticated, loading, page, state } from "./lib/state";
 	import Camp from "./pages/Attendee/Camp.svelte";
 	import MyCamps from "./pages/Attendee/MyCamps.svelte";
 	import LeaderActivity from "./pages/Leader/Activity.svelte";
@@ -10,10 +10,16 @@
 	import Login from "./pages/Auth/Login.svelte";
 	import Register from "./pages/Auth/Register.svelte";
 	import Home from "./pages/Home.svelte";
+
+	function logout() {
+		state("user").set({});
+		state("authenticated").set(false);
+	}
 </script>
 
 <div class="navbar">
 	<button on:click={() => page.set("/")}>Na hlavní stránku</button>
+	<button on:click={logout}>Odhlásit se</button>
 </div>
 
 <main>
