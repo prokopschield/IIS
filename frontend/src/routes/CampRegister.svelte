@@ -1,9 +1,10 @@
-<script>
+<script lang="ts">
 	import Modal from "../components/Modal.svelte";
 	import Card from "../components/Card.svelte";
 	import Hero from "../components/Hero.svelte";
 	import Button from "../components/Button.svelte";
 	import Navbar from "../components/Navbar.svelte";
+	import { page } from "../state.js";
 
 	// Camp info
 	let campName = "";
@@ -160,7 +161,7 @@
 	}
 
 	function homePageRedirect() {
-		location.href = "#/";
+		page.set("/");
 	}
 </script>
 
