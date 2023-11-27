@@ -39,4 +39,4 @@ services:
         depends_on:
             - backend
         volumes:
-            - ./frontend:/frontend
+            - ./prokop-frontend:/frontend
