@@ -6,9 +6,10 @@ services:
         ports:
             - "23097:8080"
     backend:
-        image: node:20-bullseye
+        # image: node:20-bullseye
+        build: ./backend
         working_dir: /backend
-        command: sh -c "yarn prisma db push && node lib/cli"
+        # command: sh -c "yarn prisma db push && node lib/cli"
         restart: always
         depends_on:
             - db
