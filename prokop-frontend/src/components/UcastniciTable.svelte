@@ -15,7 +15,7 @@
 					})
 					.reduce((score: number, previous: number) => {
 						return (score || 0) + (previous || 0);
-					}) * 100,
+					}, 0) * 100,
 			) / 100
 		);
 	}

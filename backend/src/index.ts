@@ -288,7 +288,7 @@ export async function main() {
 								({ activity: { points }, score }) =>
 									points * score
 							)
-							.reduce((next, previous) => next + previous),
+							.reduce((next, previous) => next + previous, 0),
 						all_attendees: camp.attendee.map(
 							(attendee) => attendee.user
 						),
