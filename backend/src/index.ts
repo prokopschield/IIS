@@ -317,6 +317,34 @@ export async function main() {
 					all_evaluated_activities,
 				});
 			},
+
+			async attendee_camp_info(_socket, state, camp_id: unknown) {
+				const user_id = BigInt(state.get("user_id") || NaN);
+				
+				assert(typeof camp_id === "number")
+
+				const info = await database.attendee.findFirst({
+					include: {
+						attended: {
+							include: {activity: true}
+						},
+						camp: {
+							include: {
+								user: true,
+								leader: {
+									include: {
+										 user: true
+									}
+								},
+
+							}
+						}
+					},
+					where: { camp_id, attendee_id: user_id }
+				})
+
+				return { success: true, info }
+			}
 		}
 	);
 
