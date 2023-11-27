@@ -427,6 +427,41 @@ export async function main() {
 
 				return { success: true, ...info };
 			},
+
+			async leader_create_activity(
+				_socket,
+				state,
+				camp_id,
+				name,
+				description,
+				points
+			) {
+				const user_id = BigInt(state.get("user_id") || NaN);
+
+				assert(typeof camp_id === "number");
+				assert(typeof name === "string");
+				assert(typeof description === "string");
+				assert(typeof points === "number");
+
+				const leader = await database.leader.findFirstOrThrow({
+					where: {
+						user_id,
+						camp_id,
+					},
+				});
+
+				const activity = database.activity.create({
+					data: {
+						camp_id,
+						leader_id: leader.id,
+						name,
+						description,
+						points,
+					},
+				});
+
+				return { success: true, activity };
+			},
 		}
 	);
 
