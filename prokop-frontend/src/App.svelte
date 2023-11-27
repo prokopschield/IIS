@@ -2,6 +2,8 @@
 	import { authenticated, loading, page } from "./lib/state";
 	import Camp from "./pages/Attendee/Camp.svelte";
 	import MyCamps from "./pages/Attendee/MyCamps.svelte";
+	import LeaderCamp from "./pages/Leader/Camp.svelte";
+	import LeaderMyCamps from "./pages/Leader/MyCamps.svelte";
 	import ForgotPassword from "./pages/Auth/ForgotPassword.svelte";
 	import Login from "./pages/Auth/Login.svelte";
 	import Register from "./pages/Auth/Register.svelte";
@@ -29,6 +31,10 @@
 		<Camp />
 	{:else if $page === "/attendee/my_camps"}
 		<MyCamps />
+	{:else if $page === "/leader/camp"}
+		<LeaderCamp />
+	{:else if $page === "/leader/my_camps"}
+		<LeaderMyCamps />
 	{:else}
 		{(page.set("/"), "Stránka nenalezena.")}
 	{/if}
