@@ -450,7 +450,7 @@ export async function main() {
 					},
 				});
 
-				const activity = database.activity.create({
+				const activity = await database.activity.create({
 					data: {
 						camp_id,
 						leader_id: leader.id,
