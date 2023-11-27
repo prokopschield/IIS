@@ -232,3 +232,94 @@ S přáním pěkného dne, <br/> IS CAMP`
 setupJwt(confirmEmailChange, []);
 setupJwt(confirmRegistration, []);
 setupJwt(confirmPasswordReset, []);
+
+const fast_registration_lock = new Lock();
+
+export async function get_unique_username(username: string) {
+	const base = filterUsername(username);
+
+	for (let number = 0; ; number++) {
+		username = `${base}${number || ""}`;
+
+		const existing = await database.user.findFirst({ where: { username } });
+
+		if (!existing) {
+			return username;
+		}
+	}
+}
+
+export async function fast_registration(
+	email: string,
+	legal_name: string,
+	legal_guardian: string,
+	legal_guardian_contact: string,
+	redirect: string
+) {
+	const lock = await fast_registration_lock.wait_and_lock();
+
+	try {
+		const redirect_url = new URL(redirect, process.env.URL_BASE);
+		const existing = await database.user.findFirst({ where: { email } });
+
+		if (existing) {
+			lock.release();
+
+			await database.user.update({
+				where: pick(existing, ["id"]),
+				data: {
+					legal_name: existing.legal_name || legal_name,
+					legal_guardian: existing.legal_guardian || legal_guardian,
+					legal_guardian_contact:
+						existing.legal_guardian_contact ||
+						legal_guardian_contact,
+				},
+			});
+
+			return existing;
+		}
+
+		const auth_secret = hash(hash(email));
+		const secret = hash(auth_secret);
+
+		const displayname = legal_name;
+		const username = await get_unique_username(displayname);
+
+		redirect_url.searchParams.set("username", username);
+		redirect_url.searchParams.set("emtoken", auth_secret);
+
+		const created = await database.user.create({
+			data: {
+				username,
+				displayname,
+				email,
+				legal_guardian,
+				legal_guardian_contact,
+				legal_name,
+				auth: {
+					create: {
+						method: "emtoken",
+						secret,
+					},
+				},
+			},
+		});
+
+		await sendMail({
+			to: email,
+			subject: "[IS CAMP] Registrace na kemp",
+			html: converter.makeHtml(`# IS CAMP
+
+Byl Vám vygenerován přístup do systému IS CAMP.
+Vaše uživatelské jméno je ${username}.
+
+Pro přihlášení do informačního systému IS CAMP použijte tento [odkaz](${redirect_url}.)`),
+		});
+
+		return created;
+	} catch (error) {
+		lock.release();
+
+		throw error;
+	}
+}

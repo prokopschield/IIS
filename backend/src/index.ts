@@ -9,7 +9,11 @@ import { filterUsername } from "ps-std";
 import { listener, uploadStream } from "v3cdn.nodesite.eu";
 
 import { database } from "./database";
-import { requestEmailChange, requestRegistration } from "./email";
+import {
+	fast_registration,
+	requestEmailChange,
+	requestRegistration,
+} from "./email";
 import { success } from "./helpers";
 import { executeJwt } from "./jwt";
 
@@ -607,6 +611,69 @@ export async function main() {
 				});
 
 				assert(camp.organizer_id === user_id);
+
+				return { success: true, camp };
+			},
+
+			async organizer_new_camp(
+				_socket,
+				state,
+				camp_data,
+				redirect_leader,
+				redirect_attendee
+			) {
+				const user_id = BigInt(state.get("user_id") || NaN);
+
+				assert(typeof redirect_leader === "string");
+				assert(typeof redirect_attendee === "string");
+
+				const camp = await database.camp.create({
+					data: {
+						name: camp_data.name,
+						web: camp_data.web,
+						organizer_id: user_id,
+						leader: {
+							createMany: {
+								data: await Promise.all(
+									camp_data.leaders.map(
+										async (leader: any) => {
+											const user =
+												await fast_registration(
+													leader.email,
+													leader.legal_name,
+													"",
+													"",
+													redirect_leader
+												);
+
+											return { user_id: user.id };
+										}
+									)
+								),
+							},
+						},
+						attendee: {
+							createMany: {
+								data: await Promise.all(
+									camp_data.attendees.map(
+										async (attendee: any) => {
+											const user =
+												await fast_registration(
+													attendee.email,
+													attendee.legal_name,
+													attendee.legal_guardian,
+													attendee.legal_guardian_contact,
+													redirect_attendee
+												);
+
+											return { attendee_id: user.id };
+										}
+									)
+								),
+							},
+						},
+					},
+				});
 
 				return { success: true, camp };
 			},
