@@ -2,6 +2,7 @@
 	import { onMount } from "svelte";
 	import { backend } from "../../lib/backend";
 	import { page, state } from "../../lib/state";
+	import UcastniciTable from "../../components/UcastniciTable.svelte";
 
 	let info: any = undefined;
 
@@ -34,6 +35,8 @@
 		<button on:click={() => page.set("/leader/new_activity")}>
 			Vytvořit aktivitu
 		</button>
+
+		<UcastniciTable {info} />
 	{:else}
 		Načítám data...
 	{/if}
