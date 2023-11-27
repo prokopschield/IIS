@@ -2,7 +2,7 @@
 	import { onMount } from "svelte";
 
 	import { backend } from "../../lib/backend";
-	import { state } from "../../lib/state";
+	import { page, state } from "../../lib/state";
 
 	let camps = new Array<any>();
 
@@ -32,6 +32,10 @@
 			</p>
 		</div>
 	{/each}
+
+	<button on:click={() => page.set("/organizer/new_camp")}>
+		Zaregistrovat nový tábor
+	</button>
 </div>
 
 <style>
