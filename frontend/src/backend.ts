@@ -90,11 +90,11 @@ export const { attendee_my_camps, attendee_my_activities } = backend;
  * Zoznam ucastnikov
  */
 
-// Toto je vlastne autentifikacia ucastnika
-export const authentificate_attendee: (attendee: {
-	name: string;
-	password: string;
-}) => Promise<void> = async ({ name, password }) => {
+
+export const authenticate: (
+	name: string,
+	password: string,
+) => Promise<void> = async ( name, password ) => {
 	const response = await login(name, password);
 
 	if ("error" in response) {
@@ -215,18 +215,19 @@ export const supervisor_give_points: (new_points: {
 	attendee_name: string;
 	attendee_points: number;
 }) => Promise<{ error: string } | {}> = backend.supervisor_give_points;
+
 /**
  * Organizator tabora:
  * 	1. Po prihlaseni
  * 		To iste ako ucastnik
  */
-export const authentificate_organizer: (attendee: {
+export const authentificate_organizer: (organizer: {
 	name: string;
 	password: string;
 }) => Promise<
 	| { error: string }
 	| {
-			succes: boolean;
+			success: true;
 	  }
 > = backend.authentificate_organizer;
 
@@ -239,7 +240,7 @@ export const register_organizer: (newCamp: {
 }) => Promise<
 	| { error: string }
 	| {
-			succes: true;
+			success: true;
 	  }
 > = backend.register_organizer;
 
