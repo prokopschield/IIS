@@ -13,10 +13,10 @@
 
 		if (data.attendee.length) {
 			attendee = true;
+		}
 
-			if (data.leader.length) {
-				leader = true;
-			}
+		if (data.leader.length) {
+			leader = true;
 		}
 
 		if (data.camp.length) {
