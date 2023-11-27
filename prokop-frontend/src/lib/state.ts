@@ -45,16 +45,16 @@ export const user = state<{
 
 loading.set(true);
 
+for (const [key, value] of new URL(location.href).searchParams.entries()) {
+	state(key).set(value);
+}
+
 page.set(location.pathname);
 
 page.subscribe((new_page) => history.pushState(undefined, "", new_page));
 
 async function page_load() {
-	loading.set(true)
-	
-	for (const [key, value] of new URL(location.href).searchParams.entries()) {
-		state(key).set(value);
-	}
+	loading.set(true);
 
 	if (user.value?.username && user.value?.token) {
 		try {
@@ -75,6 +75,6 @@ async function page_load() {
 	}
 }
 
-socket.on("connect", page_load)
+socket.on("connect", page_load);
 
 page_load();
