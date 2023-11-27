@@ -412,6 +412,11 @@ export async function main() {
 												},
 											},
 										},
+										leader: {
+											include: {
+												user: true,
+											},
+										},
 									},
 								},
 							},
