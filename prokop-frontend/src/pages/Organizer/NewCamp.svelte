@@ -144,8 +144,7 @@
 		margin-bottom: 8px;
 	}
 
-	input,
-	textarea {
+	input {
 		width: 100%;
 		margin-bottom: 16px;
 		padding: 8px;
