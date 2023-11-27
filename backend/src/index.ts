@@ -135,7 +135,7 @@ export async function main() {
 					redirect
 				);
 
-				return { password, status: "EMAIL_SENT" };
+				return success({ password, status: "EMAIL_SENT" });
 			},
 
 			async change_my_info(_socket, state, info) {
