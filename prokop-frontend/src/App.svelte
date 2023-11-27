@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { authenticated, loading, page } from "./lib/state";
+	import Camp from "./pages/Attendee/Camp.svelte";
 	import MyCamps from "./pages/Attendee/MyCamps.svelte";
 	import ForgotPassword from "./pages/Auth/ForgotPassword.svelte";
 	import Login from "./pages/Auth/Login.svelte";
@@ -17,6 +18,8 @@
 		<ForgotPassword />
 	{:else if !$authenticated}
 		<Login />
+	{:else if $page === "/attendee/camp"}
+		<Camp />
 	{:else if $page === "/attendee/my_camps"}
 		<MyCamps />
 	{:else}
