@@ -7,6 +7,10 @@
 	import Register from "./pages/Auth/Register.svelte";
 </script>
 
+<div class="navbar">
+	<button on:click={() => page.set("/")}>Na hlavní stránku</button>
+</div>
+
 <main>
 	{#if $loading}
 		Moment, prosím, načítám data...
@@ -26,3 +30,11 @@
 		{(page.set("/"), "Stránka nenalezena.")}
 	{/if}
 </main>
+
+<style>
+	.navbar {
+		color: white;
+		position: fixed;
+		top: 0;
+	}
+</style>
