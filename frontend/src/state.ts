@@ -26,3 +26,5 @@ export const state = cacheFn(<T>(key: string) => {
 });
 
 defineGlobal("state", state);
+
+export const page = state<string>("page");

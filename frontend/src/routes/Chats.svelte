@@ -26,7 +26,7 @@
 	];
 
 	function homePageRedirect() {
-		location.href = "#/";
+		state("page").set("$1");
 	}
 
 	function addChat() {
@@ -44,7 +44,7 @@
 	</div>
 	<div slot="centerContainer" class="flex-none">
 		<ul class="menu menu-horizontal px-1">
-			<li><a href="#/">Odhlásit se</a></li>
+			<li><a href="/">Odhlásit se</a></li>
 		</ul>
 	</div>
 </Navbar>
