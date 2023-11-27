@@ -19,5 +19,7 @@
 		<Login />
 	{:else if $page === "/attendee/my_camps"}
 		<MyCamps />
+	{:else}
+		{(page.set("/"), "Stránka nenalezena.")}
 	{/if}
 </main>
