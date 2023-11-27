@@ -123,15 +123,21 @@
 
         // We ask if operation was succesfull
         if ('success' in result && result.success) {
-            console.log("149 Inside RegistrationSuccess");
+            organizer_login_modal.close();
             state("page").set("/organizer");
         } else if ('error' in result) {
-            page_alert.text = result.error;
-            page_alert.visible = true;
+            page_alert = {
+                style: "error",
+                text: "Not implemented yet",
+                visible: true,
+            }
             console.log("Registration unsuccesfull");
         } else {
-            console.log("Error");
-            alert("Internal error");
+            page_alert = {
+                style: "Error",
+                text: "Internal failure",
+                visible: true,
+            }
         }
     }
 
@@ -144,16 +150,26 @@
 
         page_alert.visible=false;
 
-        let loginInfo = e.detail;
+        console.log("Log from Home");
+        console.log(e.detail);
+
+        let name = e.detail.name;
+        let password = e.detail.password;
         let result;
 
         try {
-            result = await authenticate(loginInfo.name, loginInfo.password);
+            result = await authenticate(name, password);
         } catch (error) {
-            page_alert.style="error";
+            document.getElementById(modalName).close();
+            page_alert.style = "error";
             page_alert.text = String(error);
             page_alert.visible = true;
+            console.log("Unsuccesfull ");
+            return;
         }
+
+        organizer_login_modal.close();
+        state("page").set("/organizer");
     }
 
     function forgotPasswordHandler() {

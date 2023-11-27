@@ -17,7 +17,7 @@
 	];
 
 	function homePageRedirect() {
-		state("page").set("$1");
+		state("page").set("/");
 	}
 
 	function changeName() {

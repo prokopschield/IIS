@@ -48,11 +48,20 @@
     load_attendee();
 
     function homePageRedirect() {
-        state("page").set("$1");
+        state("page").set("/");
     }
 
 
-    function detailsHandler(index){
+    function detailsHandlerUpcomings(index){
+        let clickedActivity=upcomingActivities[index];
+        modalContent.time = clickedActivity.name;
+        modalContent.date = clickedActivity.date;
+        modalContent.description = clickedActivity.description;
+        modalContent.title = clickedActivity.title;
+        modalName.show();
+    }
+
+    function detailsHandlerScored(index){
         let clickedActivity=upcomingActivities[index];
         modalContent.time = clickedActivity.name;
         modalContent.date = clickedActivity.date;
@@ -89,8 +98,9 @@
 
         <!-- Side menu-->
         <div class="col-span-3 md:col-span-3">
-            <!-- Your content for the first window on the left goes here -->
-            <p>Left Window 1 (3/4 width)</p>
+            <Menu>
+
+            </Menu>
         </div>
 
         <!-- upcoming activities -->
@@ -99,7 +109,7 @@
             <span>
                 {#each upcomingActivities as upcomingActivity, index}
                     <Card tittle={upcomingActivity.name} >
-                        <Button slot="undoButton" buttonClass="btn" on:click={() => detailsHandler(index)}>Details</Button>
+                        <Button slot="undoButton" buttonClass="btn" on:click={() => detailsHandlerUpcomings(index)}>Details</Button>
                         <div slot="content">
                             <p>{upcomingActivity.date}</p>
                             <p>{upcomingActivity.time}</p>
@@ -111,14 +121,25 @@
 
         <!-- Direct messaging menu -->
         <div class="col-span-3 md:col-span-3">
-            <!-- Your content for the second window on the left goes here -->
-            <p>Left Window 2 (3/4 width)</p>
+            <Menu>
+
+            </Menu>
         </div>
 
-        <!-- Right Column, Second Window -->
+        <!-- Scored activities -->
         <div class="col-span-1 md:col-span-1">
-            <!-- Your content for the second window on the right goes here -->
-            <p>Right Window 2 (1/4 width)</p>
+            <p>Scored activities</p>
+            <span>
+                {#each scoredActivities as scoredActivity, index}
+                    <Card tittle={scoredActivity.name} >
+                        <Button slot="undoButton" buttonClass="btn" on:click={() => detailsHandlerScored(index)}>Details</Button>
+                        <div slot="content">
+                            <p>{scoredActivity.date}</p>
+                            <p>{scoredActivity.time}</p>
+                        </div>
+                    </Card>
+                {/each}
+            </span>
         </div>
     </div>
 
