@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <meta http-equiv="content-type" content="text/html"/>
+    <title>ISS Projekt IS Camp</title>
+    <style type="text/css">
+        table { border-collapse: collapse; }
+        td, th { border: 1px solid black; padding: 0.3em 0.5em; text-align: left; }
+        dt { font-weight: bold; margin-top: 0.5em; }
+    </style>
+</head>
+<body>
+
+<h1>IS Camp</h1>
+
+<dl>
+    <dt>Autoři</dt>
+    <dd>xschie03
+        <a href="mailto:xschie03@stud.fit.vutbr.cz">xschie03@stud.fit.vutbr.cz</a> -
+        backend, frontend
+    </dd>
+    <dd>xmecia00 
+        <a href="mailto:xmecia00@stud.fit.vutbr.cz">xmecia00@stud.fit.vutbr.cz</a> - 
+        frontend, vedení týmu, dokumentace
+    </dd>
+    <dd>xhrbac10
+        <a href="mailto:xautor03@stud.fit.vutbr.cz">xhrbac10@stud.fit.vutbr.cz</a> - 
+        frontend, dokumentace
+    </dd>
+    <dt>URL aplikace</dt>
+    <dd><a href="https://camp.fitvut.cz/">https://camp.fitvut.cz/</a></dd>
+</dl>
+
+<h2>Uživatelé systému pro testování</h2>
+<p>Uveďte prosím existující zástupce <strong>všech rolí uživatelů</strong>.</p>
+<table>
+<tr><th>Login</th><th>Heslo</th><th>Role</th></tr>
+<tr><td>pepe</td><td>heslo</td><td>Admin/Správa (navíc)</td></tr>
+<tr><td>example-organizer</td><td>heslo</td><td>Organizátor (Hlavní vedoucí)</td></tr>
+<tr><td>example-leader</td><td>heslo</td><td>Vedoucí tábora</td></tr>
+<tr><td>example-attendee</td><td>heslo</td><td>Účastník</td></tr>
+</table> 
+
+<h3>Video</h3>
+
+<p>Součástí dokumentace je krátká komentovaná ukázka funkčnosti informačního systému: <a href="https://camp.fitvut.cz/file/1">https://camp.fitvut.cz/file/1</a></p> 
+
+<h2>Implementace</h2>
+<p><!-- Stručná dokumentace k implementaci, která popisuje, které části projektu (např. PHP skripty) implementují jednotlivé případy použití.--> 
+    Práci na projektu jsme rozděli do dvou adresářů. Frontend a Backend, které sloužili pro stejnojmenné části projektu. Projekt jsme psali v jazycích Svelte, TypeScript, JavaScript, HTML, CSS, Shell a Dockerfile. Frontend byl tvořen i pomocí CSS frameworku Tailwind a jeho knihovky Daisy UI. Pro vyšší přehlednost je kód rozdělen do několika souborů. Např. funkce zajíštující provoz emailů jsou ve ./backend/email.ts. Největší práci na backendu dal jsitě soubor index.ts, který obsahuje většinu funkciovality.
+</p>
+
+<h3>Databáze</h3>
+<p>Databáži jsme implemetnovali pomocí programu na generování SQL.</p>
+<img width="700" src="http://kdybudebasta.wz.cz/ISCampDatabaze.png">
+
+<h2>Instalace</h2>
+
+Pro jednoduchou instalaci stačí použít priložený skript deploy.sh
+
+<ul>
+    <li>Vytvořte adresář kde chcete, aby server pro aplikaci běžel</li>
+    <li>Do tohoto složku stáhněte aktuální verzi projektu pomocí příkazu `git clone
+        https://github.com/prokopschield/IIS.git "název_složky"`a následně jděte do nového vytvořeného adresáře a
+        spustě `git pull`
+    </li>
+    <li>Následovně je potřebné spustit kontajnery, proto třeba vypnout všechny eziace, stáhnut závislosti a následně
+        kontajnery spustit
+        'sudo compose down'<br>
+        'cd backend && yarn && tsc' (což nainstaluje potřebné závislosti pro backend)<br>
+        'cd prokop-frontend && yarn && yarn build' (který nainstaluje potřebné závislosti pro frontend)
+        'docker compose up --build $*'<br>
+        <br>
+    </li>
+    <li>Požadavky na SW</li>
+    <li>Rozbalení, konfigurace a inicializace databaze</li>
+</ul>
+
+<h2>Známé problémy</h2>
+<p>Vytvořili jsme dva frontendy. Z nichž doporučujeme použít ./prokop-frontend/. První byl výsledkem dlouhodobé snahy lidí spolu vytvořit funkční frontend pomocí Tailwindu. Druhý je funkčně napojený na backend našeho systému. Systém není dokonale otestován. Nejsou plně implementovány příjmé zprávy.</p>
+
+</body>
+</html>
