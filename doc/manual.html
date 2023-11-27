@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
+        >
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <meta http-equiv="content-type" content="text/html"/>
+    <title>ISS Projekt IS Camp</title>
+    <meta charset="UTF-8">
+    <style type="text/css">
+        table {
+            border-collapse: collapse;
+        }
+
+        td, th {
+            border: 1px solid black;
+            padding: 0.3em 0.5em;
+            text-align: left;
+        }
+
+        dt {
+            font-weight: bold;
+            margin-top: 0.5em;
+        }
+    </style>
+</head>
+<body>
+
+<h1>IS Camp</h1> <!-- Nahradte názvem svého zadání -->
+
+<dl>
+    <dt>Autoři</dt>
+    <dd>xschie03
+        <a href="mailto:xautor01@stud.fit.vutbr.cz">xautor01@stud.fit.vutbr.cz</a> -
+        backend
+    </dd>
+    <dd>xmecia00 <!-- Nahraďte skutečným jménem a e-mailem autora a popisem činnosti -->
+        <a href="mailto:xautor02@stud.fit.vutbr.cz">xshiel00@stud.fit.vutbr.cz</a> -
+        frontend, vedení
+    </dd>
+    <dd>xhrbac10
+        <a href="mailto:xautor03@stud.fit.vutbr.cz">xautor03@stud.fit.vutbr.cz</a> -
+        frontend
+    </dd>
+    <dt>URL aplikace</dt>
+    <dd><a href="https://camp.fitvut.cz/">camp.fitvut.cz</a></dd>
+</dl>
+
+<h2>Uživatelé systému pro testování</h2>
+<p>Uveďte prosím existující zástupce <strong>všech rolí uživatelů</strong>.</p>
+<table>
+    <tr>
+        <th>Login</th>
+        <th>Heslo</th>
+        <th>Role</th>
+    </tr>
+    <tr>
+        <td>pepe</td>
+        <td>namornik</td>
+        <td>Účastník</td>
+    </tr>
+    <tr>
+        <td>example-leader</td>
+        <td>heslo</td>
+        <td>Vedoucí</td>
+    </tr>
+    <tr>
+        <td>example-organizer</td>
+        <td>heslo</td>
+        <td>Organizátor</td>
+    </tr>
+</table>
+
+<h3>Video</h3>
+
+<p>TODO. Zatím žádné video. Video nahrajME například na VUT Google Drive, kde ho bude možné přímo spustit z odkazu.</p>
+
+<h2>Implementace</h2>
+Práci na projektu jsme rozděli do dvou adresářů.
+Frontend a Backend, které sloužili pro stejnojmenné části projektu.
+Projekt jsme psali v jazycích Svelte, TypeScript, Shell a pre pracu s kontajnermi Dockerfile.
+Frontend byl tvořen i pomocí CSS frameworku Tailwind a jeho knihovky Daisy UI.
+Pro vyšší přehlednost je kód rozdělen do několika souborů.
+Např. funkce zajíštující provoz emailů jsou ve ./backend/email.ts.
+Největší práci na backendu dal jsitě soubor index.ts, který obsahuje většinu funkcionality.
+
+<h3>Databáze</h3>
+
+<img src="database.png" width="600">
+
+<h2>Instalace</h2>
+
+Pre jednoduchu instalaciu staci pouzit prilozeny skript deploy.sh
+
+<ul>
+    <li>Vytvořte adresář kde chcete, aby server pro aplikaci běžel</li>
+    <li>Do tohoto složku stáhněte aktuální verzi projektu pomocí příkazu `git clone
+        https://github.com/prokopschield/IIS.git "název_složky"`a následně jděte do nového vytvořeného adresáře a
+        spustě `git pull`
+    </li>
+    <li>Následovně je potřebné spustit kontajnery, proto třeba vypnout všechny eziace, stáhnut závislosti a následně
+        kontajnery spustit
+        'sudo compose down'<br>
+        'cd backend && yarn && tsc' (což nainstaluje potřebné závislosti pro backend)<br>
+        'cd prokop-frontend && yarn && yarn build' (který nainstaluje potřebné závislosti pro frontend)
+        'docker compose up --build $*'<br>
+        <br>
+    </li>
+    <li>Požadavky na SW</li>
+    <li>Rozbalení, konfigurace a inicializace databaze</li>
+</ul>
+
+<h2>Známé problémy</h2>
+<p>Vytvořili jsme dva frontendy. Z nichž doporučujeme použít ./prokop-frontend/. První byl výsledkem dlouhodobé snahy
+    lidí spolu vytvořit funkční frontend pomocí Tailwindu. Druhý je funkčně napojený na backend našeho systému. Systém
+    není podrobne otestován.</p>
+</body>
+
+</body>
+</html>
