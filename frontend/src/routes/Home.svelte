@@ -29,7 +29,7 @@
 	<div slot="homePageContainer" class="flex-1"></div>
 	<div slot="centerContainer" class="flex-none">
 		<ul class="menu menu-horizontal px-1">
-			<li><a href="#/register">Registrace tábora</a></li>
+			<li><a href="/register">Registrace tábora</a></li>
 			<li>
 				<details>
 					<summary> Přihlasit se jako </summary>
