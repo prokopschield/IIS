@@ -1,10 +1,15 @@
 <script>
 	import Modal from "./shared/Modal.svelte";
-	import { createEventDispatcher } from "svelte";
 	import Button from "./shared/Button.svelte";
+	import Alert from "./shared/Alert.svelte";
+	import { createEventDispatcher } from "svelte";
 
 	export let modalId = "login_modal"; // Default value
-	export let whoLogs = "";	// Parameter of who uses the login modal
+	export let modal_alert = {
+		style: "info",
+		visible: false,
+		text: ""
+	}
 	const dispatch = createEventDispatcher();
 
 	function handleSubmit() {
@@ -25,15 +30,16 @@
 		}
 
 
-		// Send data to above in event varriable, e
+		// Send data to above in event variable, e
 		const loginData = {
 				name: loginName,
 				password: loginPassword,
 			}
 
-		console.log("log from login modal");
-		console.log(loginData);
-		dispatch("login", loginData);
+		// console.log("Log from LoginModal")
+		// console.log(loginData);
+
+		dispatch('login', loginData);
 	}
 
 
@@ -41,7 +47,11 @@
 
 
 <Modal modalId={modalId}>
-	<p slot="title"> Log in</p>
+	<p slot="title">Log in</p>
+
+	{#if modal_alert.visible}
+		<Alert slot="feedback" alertStyle={modal_alert.style}>{modal_alert.text}</Alert>
+	{/if}
 
 	<form slot="content" id="loginForm" class="space-y-3" on:submit|preventDefault={handleSubmit}>
 		<label for="name">Log in name</label><br>
