@@ -171,6 +171,21 @@ export async function main() {
 				);
 			},
 
+			async load_roles(_socket, state) {
+				const user_id = BigInt(state.get("user_id") || NaN);
+
+				const data = (await database.user.findFirst({
+					where: { id: user_id },
+					include: {
+						attendee: true,
+						camp: true,
+						leader: true
+					}
+				}))
+
+				return { success: true, data }
+			},
+
 			async attendee_my_camps(_socket, state) {
 				const user_id = BigInt(state.get("user_id") || NaN);
 
