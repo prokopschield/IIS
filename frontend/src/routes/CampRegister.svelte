@@ -151,22 +151,18 @@
         let userName = document.getElementsByName("uname")[0].value;
         let userPassword = document.getElementsByName("psw")[0].value;
 
-
-
-        console.log("Trying to log in");
-
         let result;
         try {
-         result = await authenticate(userName, userPassword);
-        }
-        catch {
-
+            result = await authenticate(userName, userPassword);
+        } catch (err) {
+            login_alert.text = String(err);
+            login_alert.visible = true;
         }
 
 
     }
 
-    function forgotPasswordHandler(){
+    function forgotPasswordHandler() {
 
     }
 
@@ -181,13 +177,12 @@
     </div>
     <div slot="centerContainer" class="flex-none">
         {#if login_alert.visible}
-        <Alert alertStyle={login_alert.style}>{login_alert.text}</Alert>
+            <Alert alertStyle={login_alert.style}>{login_alert.text}</Alert>
         {/if}
     </div>
 </Navbar>
 
 <Hero>
-
 
 
     <Card width="120" tittle="Registrace tábora">
@@ -253,7 +248,7 @@
                 Příhlášení:
             </h1>
             <br>
-            <form on:submit|preventDefault = {loginHandler}>
+            <form on:submit|preventDefault={loginHandler}>
                 <div style="border-radius: 25px; padding: 20px; background-color: #e2e2e2;">
                     <label for="uname"><b>Přihlašovací jméno: </b></label>
                     <input class="border-2 rounded-full w-60" type="text" placeholder="Vložte Přihlašovací jméno"
@@ -295,7 +290,8 @@
                 <form method="dialog">
                     <!-- if there is a button in form, it will close the modal -->
                     <button class="btn">Zavřít</button>
-                </form>q
+                </form>
+                q
             </div>
         {/if}
     </div>

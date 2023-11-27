@@ -154,20 +154,6 @@ export const attendee_load_results: (/*Stale ten isty ucastnik*/) => Promise<
 
 //// Veduci tabora funkcie
 
-/**
- * 	1. Po prilaseni
- * 		to iste ako ucastnik
- */
-export const authentificate_supervisor: (attendee: {
-	name: string;
-	password: string;
-}) => Promise<
-	| { error: string }
-	| {
-			succes: boolean;
-	  }
-> = backend.authentificate_supervisor;
-
 // Nacitanie ucastnika
 // Niesom si isty ako ho identifikovat ale asi hadam ze pomocou Session ID ?
 export const load_supervisor: (/*Nie som si isty co sem*/) => Promise<
@@ -215,21 +201,6 @@ export const supervisor_give_points: (new_points: {
 	attendee_name: string;
 	attendee_points: number;
 }) => Promise<{ error: string } | {}> = backend.supervisor_give_points;
-
-/**
- * Organizator tabora:
- * 	1. Po prihlaseni
- * 		To iste ako ucastnik
- */
-export const authentificate_organizer: (organizer: {
-	name: string;
-	password: string;
-}) => Promise<
-	| { error: string }
-	| {
-			success: true;
-	  }
-> = backend.authentificate_organizer;
 
 export const register_organizer: (newCamp: {
 	campName: string;
