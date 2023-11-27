@@ -8,7 +8,9 @@
 
 	async function createActivity() {
 		try {
-			const { id } = await backend.leader_create_activity(
+			const {
+				activity: { id },
+			} = await backend.leader_create_activity(
 				Number(state("selected_camp").value),
 				String(name),
 				String(description),
