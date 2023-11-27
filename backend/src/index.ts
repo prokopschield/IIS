@@ -359,7 +359,58 @@ export async function main() {
 				})
 
 				return { success: true, ...info }
-			}
+			},
+
+			async leader_my_camps(_socket, state) {
+				const user_id = BigInt(state.get("user_id") || NaN);
+
+				return success({
+					camps: await database.camp.findMany({
+						include: {
+							leader: {
+								include: {
+									user: {
+										select: {
+											legal_name: true,
+										},
+									},
+								},
+							},
+						},
+						where: {
+							leader: { some: { user_id } },
+						},
+					}),
+				});
+			},
+			
+			async leader_camp_info(_socket, state, camp_id: unknown) {
+				const user_id = BigInt(state.get("user_id") || NaN);
+				
+				assert(typeof camp_id === "number")
+
+				const info = await database.leader.findFirst({
+					include: {
+						camp: {
+							include: {
+								user: true,
+								leader: {
+									include: {
+										 user: true
+									}
+								},
+								attendee: {
+									include: {user: true, attended: true,}
+								},
+								activity: true
+							}
+						}
+					},
+					where: { camp_id, user_id }
+				})
+
+				return { success: true, ...info }
+			},
 		}
 	);
 
