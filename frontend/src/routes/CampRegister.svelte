@@ -76,7 +76,7 @@
                 emptyAttendeesList = false;
                 let firstName = auxAttendeesArray[index].value.split(" ")[0];
                 let lastName = auxAttendeesArray[index].value.split(" ")[1];
-                const attendee = firstName + " " + lastName,;
+                const attendee = firstName + " " + lastName;
                 attendees.push(attendee);
             }
         }
