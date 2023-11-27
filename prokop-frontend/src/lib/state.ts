@@ -45,6 +45,8 @@ export const user = state<{
 
 loading.set(true);
 
+page.set(location.pathname);
+
 page.subscribe((new_page) => history.pushState(undefined, "", new_page));
 
 async function page_load() {

@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { loading } from "./lib/state";
+	import { loading, page } from "./lib/state";
+	import Login from "./pages/Login.svelte";
 </script>
 
 <main>
 	{#if $loading}
 		Moment, prosím, načítám data...
-	{:else}
-		Načteno
+	{:else if $page === "/login"}
+		<Login />
 	{/if}
 </main>
