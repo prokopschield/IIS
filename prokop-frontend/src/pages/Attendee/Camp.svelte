@@ -8,7 +8,7 @@
 	onMount(async () => {
 		try {
 			info = await backend.attendee_camp_info(
-				state("selected_camp").value,
+				Number(state("selected_camp").value),
 			);
 		} catch (error) {
 			console.error(error);
