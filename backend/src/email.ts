@@ -305,6 +305,8 @@ export async function fast_registration(
 			},
 		});
 
+		lock.release();
+
 		await sendMail({
 			to: email,
 			subject: "[IS CAMP] Registrace na kemp",
