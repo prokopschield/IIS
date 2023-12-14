@@ -817,7 +817,9 @@ export async function main() {
 			await Source.fromStream(request);
 
 			return response.status(302).setHeader("Location", redirect).end();
-		} catch {
+		} catch (error) {
+			console.error("JWT error", request.params.hash, error);
+
 			return next();
 		}
 	});
