@@ -112,6 +112,8 @@ export async function main() {
 						)
 					) {
 						return { error: "INVALID_INFO" };
+					} else if (!info[key]) {
+						info[key] = "";
 					}
 				}
 
