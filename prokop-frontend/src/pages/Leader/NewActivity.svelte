@@ -38,7 +38,7 @@
 		<textarea id="activityDescription" bind:value={description} required
 		></textarea>
 
-		<label for="activityPoints">Activity Point Multiplier:</label>
+		<label for="activityPoints">Activity Points:</label>
 		<input type="number" id="activityPoints" bind:value={points} required />
 
 		<button type="submit">Create Activity</button>

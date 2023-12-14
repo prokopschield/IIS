@@ -6,7 +6,7 @@ import http from "http";
 import { Source } from "nsblob-native-stream";
 import { deserialize, serialize } from "nscdn-objects";
 import path from "path";
-import { filterUsername } from "ps-std";
+import { cacheFn, filterUsername } from "ps-std";
 import { Socket } from "socket.io";
 import { listener, uploadStream } from "v3cdn.nodesite.eu";
 
@@ -16,7 +16,7 @@ import {
 	requestEmailChange,
 	requestRegistration,
 } from "./email";
-import { success } from "./helpers";
+import { get_activity_total_points, success } from "./helpers";
 import { executeJwt } from "./jwt";
 
 Object.assign(BigInt.prototype, {
@@ -283,23 +283,34 @@ export async function main() {
 					where: { attendee_id: user_id },
 				});
 
-				const camps = attended_camps.map(({ attended, camp }) => {
-					return {
-						name_of_camp: camp.name,
-						next_activities: camp.activity.filter(
-							(activity) => !activity.attended.length
-						),
-						amount_of_points: attended
-							.map(
-								({ activity: { points }, score }) =>
-									points * score
-							)
-							.reduce((next, previous) => next + previous, 0),
-						all_attendees: camp.attendee.map(
-							(attendee) => attendee.user
-						),
-					};
-				});
+				const total_cached = cacheFn(get_activity_total_points);
+
+				const camps = await Promise.all(
+					attended_camps.map(async ({ attended, camp }) => {
+						const points = await Promise.all(
+							attended.map(async ({ activity, score }) => {
+								return (
+									(activity.points * score) /
+									(await total_cached(activity.id))
+								);
+							})
+						);
+
+						return {
+							name_of_camp: camp.name,
+							next_activities: camp.activity.filter(
+								(activity) => !activity.attended.length
+							),
+							amount_of_points: points.reduce(
+								(next, previous) => next + previous,
+								0
+							),
+							all_attendees: camp.attendee.map(
+								(attendee) => attendee.user
+							),
+						};
+					})
+				);
 
 				return { camps, success: true };
 			},
