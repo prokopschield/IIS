@@ -4,8 +4,10 @@ import assert from "assert";
 import { hash, verify } from "doge-passwd";
 import http from "http";
 import { Source } from "nsblob-native-stream";
+import { deserialize, serialize } from "nscdn-objects";
 import path from "path";
 import { filterUsername } from "ps-std";
+import { Socket } from "socket.io";
 import { listener, uploadStream } from "v3cdn.nodesite.eu";
 
 import { database } from "./database";
@@ -14,7 +16,7 @@ import {
 	requestEmailChange,
 	requestRegistration,
 } from "./email";
-import { success } from "./helpers";
+import { e64h, eh64, success } from "./helpers";
 import { executeJwt } from "./jwt";
 
 Object.assign(BigInt.prototype, {
@@ -24,6 +26,8 @@ Object.assign(BigInt.prototype, {
 });
 
 export async function main() {
+	const user_socket_map = new Map<bigint, Socket>();
+
 	const server = new Server(
 		{},
 		{
@@ -70,7 +74,7 @@ export async function main() {
 				return { success: false };
 			},
 
-			async session(_socket, state, username, token) {
+			async session(socket, state, username, token) {
 				assert(typeof username === "string");
 				assert(typeof token === "string");
 
@@ -85,6 +89,8 @@ export async function main() {
 						state.set("user_id", String(session.user_id));
 						state.set("username", session.user.username);
 						state.set("token", token);
+
+						user_socket_map.set(session.user_id, socket);
 
 						return success({ token, ...session.user });
 					}
@@ -676,6 +682,106 @@ export async function main() {
 				});
 
 				return { success: true, camp };
+			},
+
+			async query_dms(
+				_socket,
+				state,
+				interlocutor_query,
+				take = 20,
+				before = Number.MAX_SAFE_INTEGER
+			) {
+				const user = await database.user.findFirstOrThrow({
+					where: { id: BigInt(state.get("user_id") || "") },
+				});
+
+				const interlocutor = await database.user.findFirstOrThrow({
+					where: Number(interlocutor_query)
+						? { id: Number(interlocutor_query) }
+						: {
+								username: filterUsername(
+									String(interlocutor_query)
+								),
+						  },
+				});
+
+				const messages = await database.dm.findMany({
+					take,
+					where: {
+						id: { lt: before },
+						OR: [
+							{
+								sender_id: user.id,
+								recipient_id: interlocutor.id,
+							},
+							{
+								recipient_id: user.id,
+								sender_id: interlocutor.id,
+							},
+						],
+					},
+				});
+
+				for (const message of messages) {
+					const data = await deserialize(e64h(message.hash));
+
+					try {
+						Object.assign(message, data);
+					} catch (error) {
+						Object.assign(message, { data, error });
+					}
+				}
+
+				return success({ messages });
+			},
+
+			async get_dm_interlocutors(_socket, state) {
+				const user_id = BigInt(state.get("user_id") || NaN);
+
+				const interlocutors = await database.$queryRaw`
+					SELECT DISTINCT
+						CASE
+							WHEN d.sender_id = ${user_id} THEN d.recipient_id
+							ELSE d.sender_id
+						END AS interlocutor_id
+					FROM dm d
+					WHERE ${user_id} IN (d.sender_id, d.recipient_id)`;
+
+				return success({ interlocutors });
+			},
+
+			async send_dm(socket, state, interlocutor_query, message) {
+				const user_id = BigInt(state.get("user_id") || NaN);
+
+				const interlocutor = await database.user.findFirstOrThrow({
+					where: Number(interlocutor_query)
+						? { id: Number(interlocutor_query) }
+						: {
+								username: filterUsername(
+									String(interlocutor_query)
+								),
+						  },
+				});
+
+				const message_object = await database.dm.create({
+					data: {
+						sender_id: user_id,
+						recipient_id: interlocutor.id,
+						hash: eh64(await serialize(message)),
+					},
+				});
+
+				Object.assign(message, message_object);
+
+				const recipient_socket = user_socket_map.get(interlocutor.id);
+
+				if (recipient_socket) {
+					recipient_socket.emit("message", user_id, message);
+				}
+
+				socket.emit("message", interlocutor.id, message);
+
+				return success({ message });
 			},
 		}
 	);
