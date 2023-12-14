@@ -725,6 +725,8 @@ export async function main() {
 				for (const message of messages) {
 					const data = await deserialize(e64h(message.hash));
 
+					Object.assign(data, message);
+
 					try {
 						Object.assign(message, data);
 					} catch (error) {
