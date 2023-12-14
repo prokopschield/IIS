@@ -149,7 +149,7 @@ export async function main() {
 			},
 
 			async change_my_info(_socket, state, info) {
-				const user_id = BigInt(state.get("user_id") || NaN);
+				const user_id: bigint = BigInt(state.get("user_id") || NaN);
 
 				const {
 					displayname,
@@ -182,7 +182,7 @@ export async function main() {
 			},
 
 			async load_roles(_socket, state) {
-				const user_id = BigInt(state.get("user_id") || NaN);
+				const user_id: bigint = BigInt(state.get("user_id") || NaN);
 
 				const data = await database.user.findFirst({
 					where: { id: user_id },
@@ -197,7 +197,7 @@ export async function main() {
 			},
 
 			async attendee_my_camps(_socket, state) {
-				const user_id = BigInt(state.get("user_id") || NaN);
+				const user_id: bigint = BigInt(state.get("user_id") || NaN);
 
 				return success({
 					camps: await database.camp.findMany({
@@ -220,7 +220,7 @@ export async function main() {
 			},
 
 			async attendee_my_activities(_socket, state) {
-				const user_id = BigInt(state.get("user_id") || NaN);
+				const user_id: bigint = BigInt(state.get("user_id") || NaN);
 
 				return success({
 					activities: await database.activity.findMany({
@@ -250,7 +250,7 @@ export async function main() {
 			},
 
 			async load_attendee(_socket, state) {
-				const user_id = BigInt(state.get("user_id") || NaN);
+				const user_id: bigint = BigInt(state.get("user_id") || NaN);
 
 				const attended_camps = await database.attendee.findMany({
 					include: {
@@ -316,7 +316,7 @@ export async function main() {
 			},
 
 			async attendee_load_activities(_socket, state) {
-				const user_id = BigInt(state.get("user_id") || NaN);
+				const user_id: bigint = BigInt(state.get("user_id") || NaN);
 
 				const data = await database.user.findFirstOrThrow({
 					include: {
@@ -355,7 +355,7 @@ export async function main() {
 			},
 
 			async attendee_camp_info(_socket, state, camp_id: unknown) {
-				const user_id = BigInt(state.get("user_id") || NaN);
+				const user_id: bigint = BigInt(state.get("user_id") || NaN);
 
 				assert(typeof camp_id === "number");
 
@@ -382,7 +382,7 @@ export async function main() {
 			},
 
 			async leader_my_camps(_socket, state) {
-				const user_id = BigInt(state.get("user_id") || NaN);
+				const user_id: bigint = BigInt(state.get("user_id") || NaN);
 
 				return success({
 					camps: await database.camp.findMany({
@@ -405,7 +405,7 @@ export async function main() {
 			},
 
 			async leader_camp_info(_socket, state, camp_id: unknown) {
-				const user_id = BigInt(state.get("user_id") || NaN);
+				const user_id: bigint = BigInt(state.get("user_id") || NaN);
 
 				assert(typeof camp_id === "number");
 
@@ -457,7 +457,7 @@ export async function main() {
 				description,
 				points
 			) {
-				const user_id = BigInt(state.get("user_id") || NaN);
+				const user_id: bigint = BigInt(state.get("user_id") || NaN);
 
 				assert(typeof camp_id === "number");
 				assert(typeof name === "string");
@@ -485,7 +485,7 @@ export async function main() {
 			},
 
 			async leader_get_activity(_socket, state, camp_id, activity_id) {
-				const user_id = BigInt(state.get("user_id") || NaN);
+				const user_id: bigint = BigInt(state.get("user_id") || NaN);
 
 				assert(typeof camp_id === "number");
 				assert(typeof activity_id === "number");
@@ -518,7 +518,7 @@ export async function main() {
 				attendee_id,
 				score
 			) {
-				const user_id = BigInt(state.get("user_id") || NaN);
+				const user_id: bigint = BigInt(state.get("user_id") || NaN);
 
 				assert(typeof activity_id === "number");
 				assert(typeof attendee_id === "number");
@@ -564,7 +564,7 @@ export async function main() {
 			},
 
 			async organizer_my_camps(_socket, state) {
-				const user_id = BigInt(state.get("user_id") || NaN);
+				const user_id: bigint = BigInt(state.get("user_id") || NaN);
 
 				return success({
 					camps: await database.camp.findMany({
@@ -587,7 +587,7 @@ export async function main() {
 			},
 
 			async organizer_camp_info(_socket, state, camp_id: unknown) {
-				const user_id = BigInt(state.get("user_id") || NaN);
+				const user_id: bigint = BigInt(state.get("user_id") || NaN);
 
 				assert(typeof camp_id === "number");
 
@@ -639,7 +639,7 @@ export async function main() {
 				redirect_leader,
 				redirect_attendee
 			) {
-				const user_id = BigInt(state.get("user_id") || NaN);
+				const user_id: bigint = BigInt(state.get("user_id") || NaN);
 
 				assert(typeof redirect_leader === "string");
 				assert(typeof redirect_attendee === "string");
@@ -754,7 +754,7 @@ export async function main() {
 			},
 
 			async get_dm_interlocutors(_socket, state) {
-				const user_id = BigInt(state.get("user_id") || NaN);
+				const user_id: bigint = BigInt(state.get("user_id") || NaN);
 
 				const interlocutors = await database.$queryRaw`
 					SELECT DISTINCT
@@ -769,7 +769,7 @@ export async function main() {
 			},
 
 			async send_dm(socket, state, interlocutor_query, message) {
-				const user_id = BigInt(state.get("user_id") || NaN);
+				const user_id: bigint = BigInt(state.get("user_id") || NaN);
 
 				const interlocutor = await database.user.findFirstOrThrow({
 					where: Number(interlocutor_query)
