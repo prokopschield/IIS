@@ -778,10 +778,10 @@ export async function main() {
 				const recipient_socket = user_socket_map.get(interlocutor.id);
 
 				if (recipient_socket) {
-					recipient_socket.emit("message", user_id, message);
+					recipient_socket.emit("DM", user_id, message);
 				}
 
-				socket.emit("message", interlocutor.id, message);
+				socket.emit("DM", interlocutor.id, message);
 
 				return success({ message });
 			},
