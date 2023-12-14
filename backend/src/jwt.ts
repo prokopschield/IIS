@@ -37,7 +37,7 @@ export async function executeJwt(hash: string) {
 
 	assert(Array.isArray(data));
 
-	const [callback_ref, args_ref] = data;
+	const { [0]: callback_ref, [1]: args_ref } = data;
 
 	assert(typeof callback_ref === "string");
 	assert(typeof args_ref === "string");
