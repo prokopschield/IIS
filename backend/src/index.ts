@@ -689,7 +689,7 @@ export async function main() {
 				state,
 				interlocutor_query,
 				take = 20,
-				before = Number.MAX_SAFE_INTEGER
+				before = 0
 			) {
 				const user = await database.user.findFirstOrThrow({
 					where: { id: BigInt(state.get("user_id") || "") },
@@ -705,6 +705,8 @@ export async function main() {
 						  },
 				});
 
+				before ||= Number.MAX_SAFE_INTEGER;
+
 				const messages = await database.dm.findMany({
 					take,
 					where: {
@@ -719,6 +721,9 @@ export async function main() {
 								sender_id: interlocutor.id,
 							},
 						],
+					},
+					orderBy: {
+						id: "desc",
 					},
 				});
 
