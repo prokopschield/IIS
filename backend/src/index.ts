@@ -851,7 +851,7 @@ export async function main() {
 		return id;
 	});
 
-	app.use(async (request, response) => {
+	app.all("*", async (request, response) => {
 		const url = new URL(request.url, "http://frontend:4173");
 
 		const prequest = http.request(
