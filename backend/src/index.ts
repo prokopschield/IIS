@@ -16,7 +16,7 @@ import {
 	requestEmailChange,
 	requestRegistration,
 } from "./email";
-import { e64h, eh64, success } from "./helpers";
+import { success } from "./helpers";
 import { executeJwt } from "./jwt";
 
 Object.assign(BigInt.prototype, {
@@ -728,7 +728,7 @@ export async function main() {
 				});
 
 				for (const message of messages) {
-					const data = await deserialize(e64h(message.hash));
+					const data = await deserialize(message.hash);
 
 					Object.assign(data, message);
 
@@ -774,7 +774,7 @@ export async function main() {
 					data: {
 						sender_id: user_id,
 						recipient_id: interlocutor.id,
-						hash: eh64(await serialize(message)),
+						hash: await serialize(message),
 					},
 				});
 
