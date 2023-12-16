@@ -1,4 +1,4 @@
-import { activity } from "@prisma/client";
+import { activity, user } from "@prisma/client";
 import { Server } from "@prokopschield/simple-socket-server";
 import assert from "assert";
 import { hash, verify } from "doge-passwd";
@@ -18,6 +18,7 @@ import {
 } from "./email";
 import { get_activity_total_points, success } from "./helpers";
 import { executeJwt } from "./jwt";
+import { getUserById, user_map } from "./user_cache";
 
 Object.assign(BigInt.prototype, {
 	toJSON() {
@@ -170,17 +171,19 @@ export async function main() {
 					);
 				}
 
-				return success(
-					await database.user.update({
-						data: {
-							displayname,
-							legal_name,
-							legal_guardian,
-							legal_guardian_contact,
-						},
-						where: { id: user_id },
-					})
-				);
+				const updated: user = await database.user.update({
+					data: {
+						displayname,
+						legal_name,
+						legal_guardian,
+						legal_guardian_contact,
+					},
+					where: { id: user_id },
+				});
+
+				user_map.set(updated.id, updated);
+
+				return success(updated);
 			},
 
 			async load_roles(_socket, state) {
@@ -704,7 +707,7 @@ export async function main() {
 				take = 20,
 				before = 0
 			) {
-				const user = await database.user.findFirstOrThrow({
+				const user: user = await database.user.findFirstOrThrow({
 					where: { id: BigInt(state.get("user_id") || "") },
 				});
 
@@ -767,7 +770,13 @@ export async function main() {
 					FROM dm d
 					WHERE ${user_id} IN (d.sender_id, d.recipient_id)`;
 
-				return success({ interlocutors });
+				assert(Array.isArray(interlocutors));
+
+				return success({
+					interlocutors: interlocutors.map(({ interlocutor_id }) =>
+						getUserById(interlocutor_id)
+					),
+				});
 			},
 
 			async send_dm(socket, state, interlocutor_query, message) {
