@@ -20,6 +20,7 @@ import {
 import {
 	get_activity_total_points,
 	isCampMember,
+	round,
 	success,
 	sum,
 } from "./helpers";
@@ -318,10 +319,10 @@ export async function main() {
 					attended_camps.map(async ({ attended, camp }) => {
 						const points = await Promise.all(
 							attended.map(async ({ activity, score }) => {
-								return (
-									(activity.points * score) /
-									(await total_cached(activity.id))
-								);
+								const total = await total_cached(activity.id);
+								const cap = (activity.points * score) / total;
+
+								return round(Math.min(score, cap));
 							})
 						);
 
@@ -817,10 +818,17 @@ export async function main() {
 						const points = sum(
 							await Promise.all(
 								attendee.attended.map(async (attended) => {
-									const points =
-										(attended.score *
-											attended.activity.points) /
-										(await getTotal(attended.activity_id));
+									const score = attended.score;
+
+									const max_total = attended.activity.points;
+
+									const total = await getTotal(
+										attended.activity_id
+									);
+
+									const max = (score * max_total) / total;
+
+									const points = round(Math.min(score, max));
 
 									if (points > Number.MAX_SAFE_INTEGER) {
 										return 0;

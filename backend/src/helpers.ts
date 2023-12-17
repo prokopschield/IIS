@@ -74,3 +74,9 @@ export function sum(...numbers: sumable[]): number {
 
 	return total;
 }
+
+export function round(number: number, precision = 2) {
+	const multiplier = 10 ** Math.round(precision);
+
+	return Math.round(number * multiplier) / multiplier;
+}
