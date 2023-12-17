@@ -247,6 +247,7 @@ export async function requestPasswordReset(
 Přijali jsme žádost na změnu hesla uživatele ${user.username} (${
 				user.legal_name
 			}).
+
 Pro její potvrzení prosím klikněte na tento odkaz: [odkaz](${jwt2url(jwt)})
 
 S přáním pěkného dne, <br/> IS CAMP`
