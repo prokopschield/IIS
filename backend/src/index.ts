@@ -513,6 +513,44 @@ export async function main() {
 				return { success: true, activity };
 			},
 
+			async leader_edit_activity(
+				_socket,
+				state,
+				activity_id,
+				name,
+				description,
+				points
+			) {
+				const user_id: bigint = BigInt(state.get("user_id") || NaN);
+
+				assert(typeof activity_id === "number");
+				assert(typeof name === "string");
+				assert(typeof description === "string");
+				assert(typeof points === "number");
+
+				const existing = await database.activity.findFirstOrThrow({
+					include: { leader: true },
+					where: {
+						id: activity_id,
+					},
+				});
+
+				if (existing.leader.user_id !== user_id) {
+					throw "NOT_ACTIVITY_LEADER";
+				}
+
+				const activity = await database.activity.update({
+					data: {
+						name,
+						description,
+						points,
+					},
+					where: { id: activity_id },
+				});
+
+				return { success: true, activity };
+			},
+
 			async leader_get_activity(_socket, state, camp_id, activity_id) {
 				const user_id: bigint = BigInt(state.get("user_id") || NaN);
 
