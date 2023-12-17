@@ -755,7 +755,7 @@ export async function main() {
 					})
 				);
 
-				return { attendees };
+				return success({ attendees });
 			},
 
 			async query_dms(
