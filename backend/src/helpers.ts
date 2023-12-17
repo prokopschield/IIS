@@ -20,9 +20,9 @@ export async function get_activity_total_points(activity_id: bigint) {
 	const promise = database.$queryRaw`
 		SELECT SUM(score) AS total
 		FROM attended
-		WHERE activity_id = ${activity_id}` as Promise<{ total: number }>;
+		WHERE activity_id = ${activity_id}` as Promise<[{ total: number }]>;
 
-	const { total } = await promise;
+	const [{ total }] = await promise;
 
 	return Number(total);
 }
