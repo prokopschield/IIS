@@ -4,6 +4,7 @@ import { Converter } from "showdown";
 export const converter = new Converter({
 	completeHTMLDocument: false,
 	emoji: true,
+	simpleLineBreaks: true,
 });
 
 export function convertAndEscape(markdown: string) {
