@@ -831,8 +831,11 @@ export async function main() {
 				assert(Array.isArray(interlocutors));
 
 				return success({
-					interlocutors: interlocutors.map(({ interlocutor_id }) =>
-						getUserById(interlocutor_id)
+					interlocutors: await Promise.all(
+						interlocutors.map(
+							async ({ interlocutor_id }) =>
+								await getUserById(interlocutor_id)
+						)
 					),
 				});
 			},
