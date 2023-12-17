@@ -14,6 +14,7 @@ import { database } from "./database";
 import {
 	fast_registration,
 	requestEmailChange,
+	requestPasswordReset,
 	requestRegistration,
 } from "./email";
 import {
@@ -154,6 +155,24 @@ export async function main() {
 				);
 
 				return success({ password, status: "EMAIL_SENT" });
+			},
+
+			async reset_password(_socket, _state, info) {
+				const { email, password, redirect } = info;
+
+				const user = await database.user
+					.findFirstOrThrow({ where: { email } })
+					.catch(() => {
+						throw "EMAIL_NOT_REGISTERED";
+					});
+
+				if (!password || typeof password !== "string") {
+					throw "INVALID_PASSWORD";
+				}
+
+				await requestPasswordReset(email, password, String(redirect));
+
+				return success({ user });
 			},
 
 			async change_my_info(_socket, state, info) {
