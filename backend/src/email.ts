@@ -143,6 +143,24 @@ export async function requestRegistration(
 
 	assert(info.email.includes("@"));
 
+	const username = filterUsername(info.displayname);
+
+	const same_username = await database.user.findFirst({
+		where: { username },
+	});
+
+	if (same_username) {
+		throw "USERNAME_TAKEN";
+	}
+
+	const same_email = await database.user.findFirst({
+		where: { email: info.email },
+	});
+
+	if (same_email) {
+		return requestPasswordReset(info.email, password, redirect);
+	}
+
 	const jwt = await setupJwt(confirmRegistration, [
 		{ ...info, password_hash: hash(password), redirect },
 	]);
@@ -202,26 +220,30 @@ async function confirmPasswordReset({
 }
 
 export async function requestPasswordReset(
-	info: Omit<user, "id" | "username" | "timestamp">,
+	email: string,
 	password: string,
 	redirect: string
 ) {
-	info.email = info.email.trim();
+	email = email.trim();
 
-	assert(info.email.includes("@"));
+	assert(email.includes("@"));
+
+	const user = await database.user.findFirstOrThrow({ where: { email } });
 
 	const jwt = await setupJwt(confirmPasswordReset, [
-		{ ...info, password_hash: hash(password), redirect },
+		{ email, password_hash: hash(password), redirect },
 	]);
 
 	await sendMail({
-		to: info.email,
-		subject: "IS CAMP: Nastavení nové e-mailové adresy",
+		to: email,
+		subject: "IS CAMP: Nastavení nového hesla",
 		html: converter.makeHtml(
 			`
 # IS CAMP
 
-Děkujeme za registraci v systému IS CAMP.
+Přijali jsme žádost na změnu hesla uživatele ${user.username} (${
+				user.legal_name
+			}).
 Pro její potvrzení prosím klikněte na tento odkaz: [odkaz](${jwt2url(jwt)})
 
 S přáním pěkného dne, <br/> IS CAMP`
