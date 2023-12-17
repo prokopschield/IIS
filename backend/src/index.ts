@@ -16,7 +16,12 @@ import {
 	requestEmailChange,
 	requestRegistration,
 } from "./email";
-import { get_activity_total_points, success } from "./helpers";
+import {
+	get_activity_total_points,
+	isCampMember,
+	success,
+	sum,
+} from "./helpers";
 import { executeJwt } from "./jwt";
 import { getUserById, user_map } from "./user_cache";
 
@@ -698,6 +703,59 @@ export async function main() {
 				});
 
 				return { success: true, camp };
+			},
+
+			async get_leaderboard(_socket, state, camp_id: bigint) {
+				try {
+					camp_id = BigInt(camp_id);
+
+					assert(
+						await isCampMember(
+							BigInt(String(state.get("user_id"))),
+							camp_id
+						)
+					);
+				} catch {
+					throw `You do not have access to camp ${camp_id}`;
+				}
+
+				const attendees_raw = await database.attendee.findMany({
+					include: {
+						attended: { include: { activity: true } },
+						user: true,
+					},
+					where: { camp_id },
+				});
+
+				const getTotal = cacheFn(get_activity_total_points);
+
+				const attendees = await Promise.all(
+					attendees_raw.map(async (attendee) => {
+						const points = sum(
+							await Promise.all(
+								attendee.attended.map(async (attended) => {
+									const points =
+										(attended.score *
+											attended.activity.points) /
+										(await getTotal(attended.activity_id));
+
+									if (points > Number.MAX_SAFE_INTEGER) {
+										return 0;
+									}
+
+									return points;
+								})
+							)
+						);
+
+						return {
+							...attendee.user,
+							points,
+						};
+					})
+				);
+
+				return { attendees };
 			},
 
 			async query_dms(

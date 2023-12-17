@@ -26,3 +26,51 @@ export async function get_activity_total_points(activity_id: bigint) {
 
 	return Number(total);
 }
+
+/** Check if a user should have access to data about a camp */
+export async function isCampMember(user_id: bigint, camp_id: bigint) {
+	user_id = BigInt(user_id);
+	camp_id = BigInt(camp_id);
+
+	const attendee = await database.attendee.findFirst({
+		where: { attendee_id: user_id, camp_id },
+	});
+
+	if (attendee) {
+		return attendee;
+	}
+
+	const leader = await database.leader.findFirst({
+		where: { user_id, camp_id },
+	});
+
+	if (leader) {
+		return leader;
+	}
+
+	const camp = await database.camp.findFirst({
+		where: { organizer_id: user_id, id: camp_id },
+	});
+
+	if (camp) {
+		return camp;
+	}
+
+	return false;
+}
+
+export type sumable = bigint | number | string | sumable[];
+
+export function sum(...numbers: sumable[]): number {
+	let total = 0;
+
+	for (const number of numbers) {
+		if (Array.isArray(number)) {
+			total += sum(...number);
+		} else {
+			total += Number(number) || 0;
+		}
+	}
+
+	return total;
+}
