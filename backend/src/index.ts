@@ -592,6 +592,32 @@ export async function main() {
 				return { success: true, attended };
 			},
 
+			async leader_delete_activity(_socket, state, activity_id) {
+				const user_id = BigInt(state.get("user_id") || 0);
+				const id = BigInt(activity_id || 0);
+
+				if (!user_id) {
+					throw "NOT_AUTHENTICATED";
+				}
+
+				if (!id) {
+					throw "INVALID_ACTIVITY_ID";
+				}
+
+				const activity = await database.activity.findFirstOrThrow({
+					include: { leader: true },
+					where: { id },
+				});
+
+				if (activity.leader.user_id !== user_id) {
+					throw "NOT_ACTIVITY_LEADER";
+				}
+
+				await database.activity.delete({ where: { id } });
+
+				return success({ activity });
+			},
+
 			async organizer_my_camps(_socket, state) {
 				const user_id: bigint = BigInt(state.get("user_id") || NaN);
 
