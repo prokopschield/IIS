@@ -175,6 +175,9 @@ export async function requestRegistration(
 Děkujeme za registraci v systému IS CAMP.
 Pro její potvrzení prosím klikněte na tento odkaz: [odkaz](${jwt2url(jwt)})
 
+Přihlašovací jméno: ${username}
+Heslo: ${"*".repeat(password.length)} (zadal/a jste při registraci)
+
 S přáním pěkného dne, <br/> IS CAMP`
 		),
 	});
